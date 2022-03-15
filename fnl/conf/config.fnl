@@ -1,4 +1,4 @@
-(import-macros {: set! : let! : map!} :conf.macros)
+(import-macros {: set! : let! : map! : cmd} :conf.macros)
 
 ;; This is going to be your introduction to the let! and set! macros
 ;; let! is used for vim.g. options. For example, (let! do_filetype_lua 1) expands to vim.g["do_filetype_lua"]=1.
@@ -17,5 +17,10 @@
 
 ;; e.g. jk/jj for escape. Some people like this, others don't
 (map! [i] :jk :<esc>)
+(map! [n] :<leader>vc ":VimtexCompile<CR>")
+(map! [n] :<leader>vw ":VimtexCountWords<CR>")
 
+;; set colorscheme
+(set! termguicolors)
+(cmd "colo tea-set")
 

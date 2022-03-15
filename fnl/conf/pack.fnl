@@ -94,7 +94,8 @@
                          (setup {:icons false}))})
 
 ;; aesthetics
-(use-package! :RRethy/nvim-base16 {:config! :base16})
+(use-package! :mcchrish/zenbones.nvim
+              {:requires [:rktjmp/lush.nvim]})
 (use-package! :Pocco81/TrueZen.nvim {:cmd :TZAtaraxis :config! :truezen})
 (use-package! :rcarriga/nvim-notify
               {:config (fn []
@@ -114,6 +115,10 @@
               {:config! :neorg 
                :ft :norg 
                :after :nvim-treesitter})
+
+;;Vimtex: for tex file compilation and management.
+(local ft-tex [:tex :bib])
+(use-package! :lervag/Vimtex {:ft ft-tex})
 
 ;; At the end of the file, the unpack! macro is called to initialize packer and pass each package to the packer.nvim plugin.
 (unpack!)
