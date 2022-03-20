@@ -76,5 +76,5 @@
 ;; Now I just have this one line statusline, which works well enough
 
 ;; filename + lineno
-(set! statusline "%F%m%r%h%w: %2l")
+(set! statusline "%F%m%r%h%w: %2l/%2L")
 
