@@ -4,7 +4,7 @@
                :core.norg.concealer {}
                :core.norg.qol.toc {}
                :core.norg.completion {:config {:engine :nvim-cmp}}
-               :core.norg.dirman {:config {:workspaces {:main "~/org/neorg"} ; change this to your workspace, this is just mine
+               :core.norg.dirman {:config {:workspaces {:main "~/neorg/neorg"} ; change this to your workspace, this is just mine
                                            :autodetect true
                                            :autochdir true}}}})
 
