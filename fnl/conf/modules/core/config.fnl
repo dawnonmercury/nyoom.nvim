@@ -77,5 +77,5 @@
 
 ;; filename + lineno
 (set! laststatus 3)
-(set! statusline "%F%m%r%h%w: %2l/%2L")
+(set! statusline " %F%m%r%h%w %= %2l/%2L ")
 
