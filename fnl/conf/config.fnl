@@ -23,4 +23,3 @@
 ;; set colorscheme
 (set! termguicolors)
 (cmd "colo tea-set")
-

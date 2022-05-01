@@ -21,9 +21,12 @@
 ;; telescope
 (map! [n] :<leader>b "<cmd>Telescope buffers<CR>")
 (map! [n] :<leader>ff "<cmd>Telescope current_buffer_fuzzy_find<CR>")
-(map! [n] :<leader>fr "<cmd>Telescope frecency<CR>")
+(map! [n] :<leader>fr "<cmd>Telescope oldfiles<CR>")
 (map! [n] "<leader>:" "<cmd>Telescope commands<CR>")
 (map! [n] :<leader><space> "<cmd>Telescope find_files<CR>")
+
+;; nvimtree
+(map! [n] :<leader>o "<cmd>NvimTreeToggle<CR>")
 
 ;; truezen
 (map! [n] :<leader>z :<cmd>TZAtaraxis<CR>)
@@ -37,5 +40,3 @@
             "<cmd>lua print(require('hotpot.api.compile')['compile-selection']())<CR>")
       (map! [n] :<leader>c
             "<cmd>lua print(require('hotpot.api.compile')['compile-buffer'](0))<CR>")))
-
-

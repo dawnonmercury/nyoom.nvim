@@ -27,7 +27,6 @@
     (let [p (.. :loaded_ v :_provider)]
       (tset vim.g p 0))))
 
-
 ;; disable the ruler
 (set! noru)
 
@@ -56,8 +55,17 @@
 ;; faster macros 
 (set! lazyredraw)
 
+;; redundant with statusline
+(set! noshowmode)
+
 ;; add some padding while scrolling
 (set! scrolloff 3)
+
+;; global statusline
+(set! laststatus 3)
+
+;; disable intro
+(set! shortmess+ :I)
 
 ;; the default updatetime in vim is around 4 seconds. This messes with gitsigns and the like, lets reduce it
 (set! updatetime 500)
@@ -79,3 +87,5 @@
 (set! laststatus 3)
 (set! statusline " %F%m%r%h%w %= %2l/%2L ")
 
+;; gitsigns
+(set! diffopt [:filler :internal :indent-heuristic :algorithm:histogram])

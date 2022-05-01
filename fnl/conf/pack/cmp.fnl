@@ -1,18 +1,13 @@
 (import-macros {: set! : let! : cmd} :conf.macros)
 (local {: setup
         : mapping
+        : visible
         :config {: compare : disable}
         :SelectBehavior {:Insert insert-behavior :Select select-behavior}
         : event} (require :cmp))
 
-(local types (require :cmp.types))
 (local under-compare (require :cmp-under-comparator))
 (local {: insert} table)
-
-;; we don't want copilot to override our cmp settings 
-(let! copilot_no_tab_map true)
-(let! copilot_assume_mapped true)
-(let! copilot_tab_fallback "")
 
 ;; colors!
 (cmd "hi CmpItemAbbrMatch gui=bold guifg=#FAFAFA")
@@ -33,13 +28,17 @@
 ;; and of course some settings
 (set! completeopt [:menu :menuone :noselect])
 
-(setup {:preselect types.cmp.PreselectMode.None
+(setup {:preselect (. (. (. (require :cmp.types) :cmp) :PreselectMode) :None)
+        :window {:documentation {:border :solid}
+                 :completion {:border :solid}}
         :formatting {:format (fn [entry vim-item]
                                (set vim-item.menu
                                     (. {:nvim_lsp :lsp
-                                        :Path :pth
-                                        :treesitter :trs
+                                        :nvim_lua :lua
+                                        :buffer :buf
+                                        :path :pth
                                         :copilot :cop
+                                        :treesitter :trs
                                         :conjure :cj}
                                        entry.source.name))
                                (set vim-item.kind
@@ -76,13 +75,19 @@
                   :<C-e> (mapping.abort)
                   :<up> disable
                   :<down> disable
-                  :<Tab> (mapping (mapping.select_next_item {:behavior insert-behavior})
-                                  [:i :s])
-                  :<S-Tab> (mapping (mapping.select_prev_item {:behavior insert-behavior})
-                                    [:i :s])
-                  :<space> (mapping.confirm {:select false})}
-        :sources [{:name :nvim_lsp}
-                  {:name :conjure}
+                  "<Tab>" (mapping (mapping.select_next_item {:behavior insert-behavior}) [:i :s])
+                  "<S-Tab>" (mapping (mapping.select_prev_item {:behavior insert-behavior}) [:i :s])
+                  "<space>" (mapping.confirm {:select false})}
+        :sources [{:name :nvim_lsp
+                   :max_item_count 5}
+                  {:name :conjure
+                   :max_item_count 5}
+                  {:name :nvim_lua
+                   :max_item_count 3}
+                  {:name :buffer
+                   :max_item_count 2}
+                  {:name :treesitter
+                   :max_item_count 3}
                   {:name :copilot}
                   {:name :path}]
         :sorting {:comparators [compare.offset

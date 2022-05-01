@@ -8,7 +8,6 @@
                                            :autodetect true
                                            :autochdir true}}}})
 
-
 ;; neorg treesitter parsers
 (local parser-config
        ((. (require :nvim-treesitter.parsers) :get_parser_configs)))
@@ -22,4 +21,3 @@
      {:install_info {:url "https://github.com/nvim-neorg/tree-sitter-norg-table"
                      :files [:src/parser.c]
                      :branch :main}})
-
