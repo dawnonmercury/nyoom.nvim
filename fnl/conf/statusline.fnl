@@ -41,7 +41,7 @@
                                                                   :mode)))
                                              :upper)
                                         3 "%#StatusLine#"
-                                        4 " %f%m "
+                                        4 " %f %m "
                                         5 "%="
                                         6 " %Y "
                                         7 (color)
