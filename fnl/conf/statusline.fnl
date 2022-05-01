@@ -41,11 +41,11 @@
                                                                   :mode)))
                                              :upper)
                                         3 "%#StatusLine#"
-                                        4 " %f "
+                                        4 " %f%m "
                                         5 "%="
                                         6 " %Y "
                                         7 (color)
-                                        8 " %l:%c "})))
+                                        8 " %l/%L:%c "})))
 (fn Statusline.inactive []
   "%#StatusInactive# %f ")
 
