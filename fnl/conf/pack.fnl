@@ -31,7 +31,6 @@
 
 ;; language specific plugins
 (use-package! :gpanders/nvim-parinfer {:ft lisp-ft})                             ;; ((((lisp) is) scary) fun)
-(use-package! :Olical/conjure {:branch :develop :ft lisp-ft})                    ;; evaluate code emacs style
 (use-package! :simrat39/rust-tools.nvim {:ft :rust :init :rust-tools})           ;; rust my beloved
 
 ;; File navigation

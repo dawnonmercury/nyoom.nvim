@@ -1,4 +1,4 @@
-(import-macros {: set!} :conf.macros)
+(import-macros {: set! : cmd} :conf.macros)
 
 ;;; Disable some built-in Neovim plugins and unneeded providers
 (let [built-ins [:tar
@@ -123,8 +123,6 @@
 
 ;; enable termguicolors
 (set! termguicolors)
-
-;; set colorscheme
 (cmd "colo tea-set")
 
 ;; gitsigns
