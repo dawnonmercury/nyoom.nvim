@@ -17,6 +17,9 @@
 ;; There are some plugins we only want to load for lisps. Heres a list of lispy filetypes I use
 (local lisp-ft [:fennel :clojure :lisp :racket :scheme])
 
+;; Vimtex filetypes
+(local VTex [:tex :bib])
+
 ;; Packer can manage itself
 (use-package! :wbthomason/packer.nvim)
 
@@ -84,8 +87,11 @@
                                                    :requires [(pack :rafamadriz/friendly-snippets
                                                                     {:opt false})]})]})
 
+;; Vimtex
+(use-package! :lervag/vimtex {:ft VTex})
+
 ;; aesthetics
-(use-package! :RRethy/nvim-base16 {:config! :base16})
+(use-package! :ragdoll2iguess/zenbones.nvim {:requires [(pack :rktjmp/lush.nvim)]})
 (use-package! :rcarriga/nvim-notify {:config! :notify})
 (use-package! :monkoose/matchparen.nvim {:config! :matchparen})
 (use-package! :kyazdani42/nvim-web-devicons {:module :nvim-web-devicons})

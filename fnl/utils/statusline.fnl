@@ -45,11 +45,11 @@
                                                                 :mode)))
                                            :upper)
                                         "%#StatusLine#"
-                                        " %f "
+                                        " %f %m "
                                         "%="
                                         " %Y "
                                         (color)
-                                        " %l:%c "])))
+                                        " %l(%L):%c "])))
 
 ;; And to just set that global statusline, showmode is now redundant
 (set! laststatus 3)
