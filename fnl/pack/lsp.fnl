@@ -76,6 +76,10 @@
 (when (= (vim.fn.executable :rust-analyzer) 1)
   (lsp.rust_analyzer.setup defaults))
 
+;; tex
+(when (= (vim.fn.executable :texlab-lsp) 1)
+  (lsp.texlab.setup defaults))
+
 ;; for trickier servers you can change up the defaults
 (lsp.sumneko_lua.setup {:on_attach on-attach
                         : capabilities

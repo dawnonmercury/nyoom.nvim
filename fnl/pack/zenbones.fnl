@@ -1,24 +1,4 @@
 (require-macros :macros.highlight-macros)
-(local {: setup} (require :base16-colorscheme))
-
-;; You can either define your own colors
-;; E.g. colors from https://www.ibm.com/brand/experience-guides/developer/brand/color/
-(setup {:base00 "#161616"
-        :base01 "#262626"
-        :base02 "#393939"
-        :base03 "#525252"
-        :base04 "#FDFDFD"
-        :base05 "#FAFAFA"
-        :base06 "#FFFFFF"
-        :base07 "#c1c7cd"
-        :base08 "#dde1e6"
-        :base09 "#f2f4f8"
-        :base0A "#42be65"
-        :base0B "#3ddbd9"
-        :base0C "#33b1ff"
-        :base0D "#ff7eb6"
-        :base0E "#be95ff"
-        :base0F "#3ddbd9"})
 
 ;; Custom highlights/modifications
 ;; Bold is added for fun. To see why vim.cmd is used for some, see: https://github.com/bakpakin/Fennel/issues/425
@@ -27,6 +7,7 @@
 ;; (highlight! MatchParen [:underline] {:bg "#262626"})
 ;; (highlight! StatusLine [:none] {:fg "#363636" :bg "#161616"})
 ;; (highlight! StatusNormal [:none] {:fg "#363636"} :bg "#161616")
+(vim.cmd "colo tea-set")
 (vim.cmd "hi MatchParen gui=underline guibg=#262626")
 (vim.cmd "hi StatusLine gui=underline guifg=#363636 guibg=#161616")
 (vim.cmd "hi StatusNormal gui=underline guifg=#363636 guibg=#161616")

@@ -37,5 +37,3 @@ require("hotpot").setup()
 
 -- require core config
 require("core")
-
-vim.cmd("colo tea-set")

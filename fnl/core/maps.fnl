@@ -60,3 +60,7 @@
 
 ;; truezen
 (map! [n] :<leader>tz :<cmd>TZAtaraxis<CR>)
+
+;; Vimtex compilation
+(map! [n] :<leader>vc :<cmd>VimtexCompile<CR>)
+(map! [n] :<leader>vw :<cmd>VimtexCountWords<CR>)
