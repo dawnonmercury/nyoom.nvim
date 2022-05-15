@@ -52,8 +52,8 @@
                                         " %l(%L):%c "])))
 
 ;; And to just set that global statusline, showmode is now redundant
+(set! noshowmode)
 (set! laststatus 3)
-(set! showmode false)
 (set! statusline "%!v:lua.Statusline.active()")
 
 
