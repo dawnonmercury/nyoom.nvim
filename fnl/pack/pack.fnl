@@ -51,7 +51,9 @@
                           (pack :nvim-treesitter/playground {:cmd :TSPlayground})]})
 
 ;; lsp
-(use-package! :neovim/nvim-lspconfig {:config (load-file :lsp)}) 
+(use-package! :neovim/nvim-lspconfig {:config (load-file :lsp)
+                                      :after :nvim-lsp-installer}) 
+(use-package! :williamboman/nvim-lsp-installer)
 (use-package! :folke/trouble.nvim {:cmd :Trouble :config (call-setup :trouble)})
 (use-package! :ray-x/lsp_signature.nvim {:module :lsp_signature})
 (use-package! :j-hui/fidget.nvim {:after :nvim-lspconfig :config (call-setup :fidget)})
