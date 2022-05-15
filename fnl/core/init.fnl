@@ -16,7 +16,7 @@
   (require :packer_compiled))
 
 ;; Colorscheme
-(require :core.highlights)
+;; (require :core.highlights)
 
 ;; Statusline
 (require :utils.statusline)
