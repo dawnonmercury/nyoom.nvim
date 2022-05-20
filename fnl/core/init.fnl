@@ -4,8 +4,14 @@
 ;; Set vim options
 (require :core.options)
 
-;; Mappings
-(require :core.keymaps)
+;; Autocommands
+(require :core.events)
+
+;; Colorscheme
+(require :core.highlights)
+
+;; Statusline
+(require :utils.statusline)
 
 ;; load packer
 (require :pack.pack)
@@ -15,15 +21,14 @@
                                   :/lua/packer_compiled.lua)) 1)
   (require :packer_compiled))
 
+<<<<<<< HEAD
 ;; Colorscheme
 ;; (require :core.highlights)
+=======
+;; Mappings
+(require :core.keymaps)
 
-;; Statusline
-(require :utils.statusline)
+>>>>>>> upstream/main
 
-;; require custom parinfer plugin afterim :VimEnter, hence why parinfer-rust is added in /opt (we just use it to build the dylib)
-(fn require-parinfer []
-  (require :pack.parinfer))
 
-(vim.api.nvim_create_augroup "parinfer" {:clear true})
-(vim.api.nvim_create_autocmd :VimEnter {:callback require-parinfer :group "parinfer"})
+
