@@ -2,7 +2,7 @@
 (λ key [tbl prop] [(. tbl prop) prop])
 
 ;; easier command line mode
-(which-key.register {";" {":" "vim-ex"}})
+(which-key.register {";" [":" "vim-ex"]})
 
 ;; Visuals
 (which-key.register {"<leader>t" {:name "Visuals"
@@ -13,6 +13,12 @@
 
 ;; NvimTree
 (which-key.register {"<leader>op" ["<cmd>NvimTreeToggle<CR>" "nvimtree"]})
+
+;; VimTex
+(which-key.register {"<leader>v" {:name "VimTex"
+                                  "c" ["<cmd>VimtexCompile<CR>" "Continuous Compile"]
+                                  "s" ["<cmd>VimtexCompileSS<CR>" "Single Shot Compile"]
+                                  "w" ["<cmd>VimtexCountWords<CR>" "Count Words"]}})
 
 ;; Conjure
 (which-key.register {"<localleader>E" "eval motion"
