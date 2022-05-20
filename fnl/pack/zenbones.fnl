@@ -8,6 +8,7 @@
 ;; (highlight! StatusLine [:none] {:fg "#363636" :bg "#161616"})
 ;; (highlight! StatusNormal [:none] {:fg "#363636"} :bg "#161616")
 (vim.cmd "colo tea-set")
+
 ;;(vim.cmd "hi MatchParen gui=underline guibg=#262626")
 ;;(vim.cmd "hi StatusLine gui=underline guifg=#363636 guibg=#161616")
 ;;(vim.cmd "hi StatusNormal gui=underline guifg=#363636 guibg=#161616")

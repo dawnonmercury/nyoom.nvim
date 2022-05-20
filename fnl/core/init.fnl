@@ -21,14 +21,7 @@
                                   :/lua/packer_compiled.lua)) 1)
   (require :packer_compiled))
 
-<<<<<<< HEAD
-;; Colorscheme
-;; (require :core.highlights)
-=======
 ;; Mappings
 (require :core.keymaps)
-
->>>>>>> upstream/main
-
 
 
