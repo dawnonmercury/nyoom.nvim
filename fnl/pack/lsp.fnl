@@ -67,13 +67,10 @@
 (let [servers [:clojure_lsp
                :rust_analyzer
                :rnix
+               :texlab
                :pyright]]
   (each [_ server (ipairs servers)]
     ((. (. lsp server) :setup) defaults)))
-
-;; tex
-(when (= (vim.fn.executable :texlab) 1)
-  (lsp.texlab.setup defaults))
 
 ;; for trickier servers you can change up the defaults
 (lsp.sumneko_lua.setup {:on_attach on-attach
