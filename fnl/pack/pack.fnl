@@ -1,15 +1,11 @@
 (require-macros :macros.package-macros)
 
-;; custom compile-path under lua/, so impatient & hotpot can cache it. 
-(local compile-path (.. (vim.fn.stdpath :config)
-                        "/lua/packer_compiled.lua"))
-
 ;; Setup packer
 (local {: init} (require :packer))
 (init {:autoremove true
               :git {:clone_timeout 300}
               :profile {:enable true}
-              :compile_path compile-path
+              :compile_path (.. (vim.fn.stdpath :config) "/lua/packer_compiled.lua")
               :display {:header_lines 2
                         :title " packer.nvim"
                         :open_fn (λ open_fn []
@@ -35,6 +31,7 @@
                :config (tset vim.g "conjure#extract#tree_sitter#enabled" true)
                :requires [(match fennel_compiler
                              :hotpot (pack :rktjmp/hotpot.nvim {:branch :master})
+                             :aniseed (pack :Olica/aniseed {:branch :develop :requires [(pack :lewis6991/impatient.nvim)]})
                              :tangerine (pack :udayvir-singh/tangerine.nvim {:requires [(pack :lewis6991/impatient.nvim)]}))]})
 
 (use-package! :eraserhd/parinfer-rust {:opt true :run "cargo build --release"})
@@ -63,7 +60,6 @@
 (use-package! :williamboman/nvim-lsp-installer {:opt true
                                                 :setup (defer! :nvim-lsp-installer 0)})
 
-
 (use-package! :neovim/nvim-lspconfig {:after :nvim-lsp-installer
                                       :module :lspconfig
                                       :config (fn []
@@ -76,6 +72,7 @@
 
 ;; git
 (use-package! :TimUntersberger/neogit {:config (call-setup :neogit) :cmd :Neogit})
+(use-package! :lewis6991/gitsigns.nvim {:opt true :setup (defer! :gitsigns.nvim 0) :config (call-setup :gitsigns)})
 
 ;; completion/copilot
 (use-package! :zbirenbaum/copilot.lua
@@ -96,8 +93,7 @@
                           (pack :L3MON4D3/LuaSnip {:event :InsertEnter
                                                    :wants :friendly-snippets
                                                    :config (load-file :luasnip)
-                                                   :requires [(pack :rafamadriz/friendly-snippets
-                                                                    {:opt false})]})]})
+                                                   :requires [(pack :rafamadriz/friendly-snippets)]})]})
 
 ;; Vimtex
 (use-package! :lervag/vimtex {:ft VTex})
@@ -105,22 +101,17 @@
 ;; aesthetics
 (use-package! :ragdoll2iguess/zenbones.nvim {:config (load-file :zenbones)
                                              :requires [(pack :rktjmp/lush.nvim)]})
-(use-package! :rcarriga/nvim-notify {:config (load-file :notify)})
 (use-package! :kyazdani42/nvim-web-devicons {:module :nvim-web-devicons})
 (use-package! :monkoose/matchparen.nvim {:config (load-file :matchparen)})
 (use-package! :Pocco81/TrueZen.nvim {:cmd :TZAtaraxis :config (load-file :truezen)})
-(use-package! :akinsho/bufferline.nvim {:event :BufEnter :config (load-file :bufferline)})
 (use-package! :norcalli/nvim-colorizer.lua {:config (load-file :colorizer) :event [:BufRead :BufNewFile]})
+
+;; Disabled by default, just uncomment them and run :PackerSync if you want
+;; (use-package! :akinsho/bufferline.nvim {:event :BufEnter :config (load-file :bufferline)})
+;; (use-package! :rcarriga/nvim-notify {:config (load-file :notify)})
 
 ;; Notes: orgmode was previously supported, but its quite buggy and not up to part with emacs. I think neorg is the way to go. 
 (use-package! :nvim-neorg/neorg {:config (load-file :neorg) :ft :norg :after :nvim-treesitter})
 
 ;; At the end of the file, the unpack! macro is called to initialize packer and pass each package to the packer.nvim plugin.
 (unpack!)
-
-;; Make sure packer is all ready to go
-(let [compiled? (= (vim.fn.filereadable compile-path) 1)
-      load-compiled #(require :packer_compiled)]
- (if compiled?
-     (load-compiled)
-     (. (require :packer) :sync)))

@@ -4,19 +4,17 @@
 ;; Set vim options
 (require :core.options)
 
+;; Commands
+(require :core.commands)
+
 ;; Autocommands
 (require :core.events)
 
 ;; Colorscheme
 (require :core.highlights)
 
-;; Statusline
-(require :utils.statusline)
-
-;; load packer
-(require :pack.pack)
-
 ;; Mappings
 (require :core.keymaps)
 
-
+;; Statusline
+(require :core.statusline)
