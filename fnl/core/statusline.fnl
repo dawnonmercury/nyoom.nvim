@@ -78,13 +78,13 @@
                                                                     :mode)))
                                                :upper)
                                             "%#StatusLine#"
-                                            " %f "
+                                            " %f %m "
                                             "%#StatusPosition#"
                                             (get-git-status)
                                             "%="
                                             (get-lsp-diagnostic)
                                             "%#StatusPosition#"
-                                            " %l:%c "])))
+                                            " %l(%L):%c "])))
 
 (set Statusline.winbar (fn []
                          (table.concat ["%#WinBarAccent#"
