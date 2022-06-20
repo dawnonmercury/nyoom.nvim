@@ -99,7 +99,7 @@
 (use-package! :lervag/vimtex {:ft VTex})
 
 ;; aesthetics
-(use-package! :ragdoll2iguess/zenbones.nvim {:config (load-file :zenbones)
+(use-package! :dawnonmercury/zenbones.nvim {:config (load-file :zenbones)
                                              :requires [(pack :rktjmp/lush.nvim)]})
 (use-package! :kyazdani42/nvim-web-devicons {:module :nvim-web-devicons})
 (use-package! :monkoose/matchparen.nvim {:config (load-file :matchparen)})
