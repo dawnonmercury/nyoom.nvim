@@ -8,31 +8,31 @@
 
 ;; Losely based off of IBM Carbon Palette [https://www.ibm.com/brand/experience-guides/developer/brand/color/)
 (local carbon (or (and (= vim.o.background :dark)
-                   {:base00 "#161616" ;; The origin color or the Carbon palette
-                    :base01 "#262626" ;; A brighter shade color based on base00
-                    :base02 "#393939" ;; An even more brighter shade color of base00
-                    :base03 "#525252" ;; The brightest shade color based on base00
-                    :base04 "#dde1e6" ;; The origin color or the Snow Storm sequence.
-                    :base05 "#f2f4f8" ;; A brighter shade color of base04
-                    :base06 "#ffffff" ;; The brightest shade color based on base04
-                    :base07 "#08bdba" ;; A calm and highly contrasted color reminiscent of glowing ice
-                    :base08 "#3ddbd9" ;; The bright and shiny primary accent color reminiscent of pure and clear energy
+                   {:base00 "#181818" ;; The origin color or the Carbon palette
+                    :base01 "#282828" ;; A brighter shade color based on base00
+                    :base02 "#3b3b3b" ;; An even more brighter shade color of base00
+                    :base03 "#545454" ;; The brightest shade color based on base00
+                    :base04 "#f3efed" ;; The origin color or the Snow Storm sequence.
+                    :base05 "#faffef" ;; A brighter shade color of base04
+                    :base06 "#feffff" ;; The brightest shade color based on base04
+                    :base07 "#ffee7f" ;; A calm and highly contrasted color reminiscent of glowing ice
+                    :base08 "#dada99" ;; The bright and shiny primary accent color reminiscent of pure and clear energy
                     :base09 "#ff7eb6" ;; A more darkened and less saturated color reminiscent of cherry blossoms
-                    :base10 "#ee5396" ;; A dark and intensive color reminiscent of the withering flowers come fall
-                    :base11 "#33b1ff" ;; But never have I been a blue calm sea. I have always been a storm
-                    :base12 "#78a9ff" ;; And the sky was never quite the same shade of blue again
-                    :base13 "#42be65" ;; Nature in her green, tranquil woods heals and soothes all afflictions
-                    :base14 "#be95ff" ;; I want to watch wisteria grow right over my bare feet
+                    :base10 "#fa5055" ;; A dark and intensive color reminiscent of the withering flowers come fall
+                    :base11 "#44c9ff" ;; But never have I been a blue calm sea. I have always been a storm
+                    :base12 "#88aaff" ;; And the sky was never quite the same shade of blue again
+                    :base13 "#76df9a" ;; Nature in her green, tranquil woods heals and soothes all afflictions
+                    :base14 "#cfa6ff" ;; I want to watch wisteria grow right over my bare feet
                     :base15 "#82cfff" ;; A book must be an ice axe to break the seas frozen inside our soul
-                    :blend  "#131313" ;; Blend of #000000 & base00 for darker accents 
+                    :blend  "#151515" ;; Blend of #000000 & base00 for darker accents 
                     :none :NONE})
-               {:base00 "#ECEFF4" ;; The origin color or the Carbon palette
-                :base01 "#E5E9F0" ;; A brighter shade color based on base00
-                :base02 "#D8DEE9" ;; An even more brighter shade color of base00
-                :base03 "#4C566A" ;; The brightest shade color based on base00
-                :base04 "#434C5E" ;; The origin color or the Snow Storm sequence.
-                :base05 "#3B4252" ;; A brighter shade color of base04
-                :base06 "#2E3440" ;; The brightest shade color based on base04
+               {:base00 "#f3efed" ;; The origin color or the Carbon palette
+                :base01 "#e3dfdd" ;; A brighter shade color based on base00
+                :base02 "#e0dcda" ;; An even more brighter shade color of base00
+                :base03 "#c0b5b3" ;; The brightest shade color based on base00
+                :base04 "#282828" ;; The origin color or the Snow Storm sequence.
+                :base05 "#3b3b3b" ;; A brighter shade color of base04
+                :base06 "#545454" ;; The brightest shade color based on base04
                 :base07 "#8FBCBB" ;; A calm and highly contrasted color reminiscent of glowing ice
                 :base08 "#88C0D0" ;; The bright and shiny primary accent color reminiscent of pure and clear energy
                 :base09 "#81A1C1" ;; A more darkened and less saturated color reminiscent of cherry blossoms
@@ -42,7 +42,7 @@
                 :base13 "#EBCB8B" ;; Nature in her green, tranquil woods heals and soothes all afflictions
                 :base14 "#A3BE8C" ;; I want to watch wisteria grow right over my bare feet
                 :base15 "#B48EAD" ;; A book must be an ice axe to break the seas frozen inside our soul
-                :blend  "#FAFAFA" ;; Blend of #000000 & base00 for darker accents 
+                :blend  "#fefefe" ;; Blend of #000000 & base00 for darker accents 
                 :none :NONE}))
   
 ;; terminal 

@@ -1,1 +1,1 @@
-(vim.cmd "colo tea-set")
+(vim.cmd "colo muses")

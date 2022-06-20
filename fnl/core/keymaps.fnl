@@ -24,6 +24,7 @@
 (which-key.register {"<leader>v" {:name "VimTex"
                                   "c" ["<cmd>VimtexCompile<CR>" "Continuous Compile"]
                                   "s" ["<cmd>VimtexCompileSS<CR>" "Single Shot Compile"]
+                                  "e" ["<cmd>VimtexClean!<CR>" "Clean Up All Extraneous Files"]
                                   "w" ["<cmd>VimtexCountWords<CR>" "Count Words"]}})
 
 ;; Conjure
