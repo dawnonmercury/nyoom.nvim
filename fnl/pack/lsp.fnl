@@ -1,5 +1,4 @@
 (local lsp (require :lspconfig))
-(local {: set-lsp-keys!} (require :core.keymaps))
 
 ;;; Diagnostics configuration
 (let [{: config : severity} vim.diagnostic
@@ -22,10 +21,11 @@
   (set vim.lsp.handlers.textDocument/hover
        (with handlers.hover {:border :solid})))
 
-;;; Set keymaps + lsp_signature on attaching the server
 (fn on-attach [client bufnr]
-  (import-macros {: autocmd! : augroup!} :macros.event-macros)
+  (local {: set-lsp-keys!} (require :core.keymaps))
+  ;; set keymaps via which-key
   (set-lsp-keys! bufnr)
+   ;; lsp_signature on attaching the server
   (let [signature (require :lsp_signature)]
     (signature.on_attach {:bind true
                           :fix_pos true
@@ -35,13 +35,21 @@
                           :hint_prefix "● "
                           :hint_scheme :DiagnosticSignInfo}
                          bufnr))
-  (local {:document_formatting has-formatting?
-          :formatting_seq_sync format-seq-sync!
-          :document_range_formatting has-range-formatting?} client.server_capabilities)
-  (when has-formatting?
-   (augroup! lsp-format-before-saving
-             (autocmd! BufWritePre <buffer>
-                       (format-seq-sync! nil 1000))))) 
+  ;; Format buffer before saving
+  (import-macros {: autocmd! : augroup! : clear!} :macros.event-macros)
+  (local {: contains?} (require :macros.lib.seq))
+  (when (client.supports_method "textDocument/formatting")
+    (augroup! lsp-format-before-saving
+      (clear! {:buffer bufnr})
+      (autocmd! BufWritePre <buffer>
+        '(vim.lsp.buf.format {:filter (fn [client] (not (contains? [:jsonls :tsserver] client.name)))
+                              :bufnr bufnr})
+        {:buffer bufnr})))
+  ;; Display hints on hover
+  (local {:inlay_hints inlay-hints!} (require :lsp_extensions))
+  (augroup! lsp-display-hints
+    (autocmd! [CursorHold CursorHoldI] *.rs
+      '(inlay-hints! {}))))
 
 ;; What should the lsp be demanded of? Normally this would
 (local capabilities (vim.lsp.protocol.make_client_capabilities))

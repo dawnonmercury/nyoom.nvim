@@ -4,6 +4,14 @@
 (set! updatetime 200)
 (set! timeoutlen 500)
 
+;; guicursor tweaks 
+(set! guicursor "n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20")
+
+;; use treesitter for folding
+(set! foldlevel 100)
+(set! foldmethod :expr) 
+(set! foldexpr "nvim_treesitter#foldexpr()")
+
 ;; Show regex differences in a split
 (set! inccommand :split)
 
@@ -25,6 +33,10 @@
                  :foldsep "│"
                  :foldopen "▾"
                  :foldclose "▸"})
+
+;; and the same treatment for trailing characters
+(set! list)
+(set! listchars {:tab "> " :nbsp "␣" :trail "-"})
 
 ;; Use clipboard outside Neovim
 (set! clipboard :unnamedplus)
@@ -77,3 +89,12 @@
 
 ;; cmp options
 (set! completeopt [:menu :menuone :preview :noinsert])
+
+;; cmdhieght 0 is a nightly option
+(fn nightly? []
+   "Check if using Neovim nightly (0.8)"
+   (let [nightly (vim.fn.has :nvim-0.8.0)]
+     (= nightly 1)))
+
+(if (= true (nightly?))
+   (set! cmdheight 0))
