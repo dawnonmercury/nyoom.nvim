@@ -106,6 +106,8 @@
 (use-package! :Pocco81/TrueZen.nvim {:cmd :TZAtaraxis :config (load-file :truezen)})
 (use-package! :norcalli/nvim-colorizer.lua {:config (load-file :colorizer) :event [:BufRead :BufNewFile]})
 
+(use-package! :chaimleib/vim-renpy)
+
 ;; Disabled by default, just uncomment them and run :PackerSync if you want
 ;; (use-package! :akinsho/bufferline.nvim {:event :BufEnter :config (load-file :bufferline)})
 ;; (use-package! :rcarriga/nvim-notify {:config (load-file :notify)})
