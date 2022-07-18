@@ -7,12 +7,7 @@
 ;;(set! background :dark)
 (set! guifont "Comic Code Ligatures:h15")
 
-;; neovide options
-(let! neovide_cursor_vfx_mode :pixiedust)
-(let! neovide_floating_blur_amount_x 5.0)
-(let! neovide_floating_blur_amount_y 5.0)
-
-;; Losely based off of IBM Carbon Palette [https://www.ibm.com/brand/experience-guides/developer/brand/color/)
+;; Losely based off of IBM Carbon Palette (https://www.ibm.com/brand/experience-guides/developer/brand/color/)
 (local carbon (or (and (= vim.o.background :dark)
                    {:base00 "#181818" ;; The origin color or the Carbon palette
                     :base01 "#282828" ;; A brighter shade color based on base00
@@ -49,8 +44,9 @@
                 :base14 "#A3BE8C" ;; I want to watch wisteria grow right over my bare feet
                 :base15 "#B48EAD" ;; A book must be an ice axe to break the seas frozen inside our soul
                 :blend  "#fefefe" ;; Blend of #000000 & base00 for darker accents 
+>>>>>>> upstream/main
                 :none :NONE}))
-  
+
 ;; terminal 
 (let! terminal_color_0 carbon.base01)
 (let! terminal_color_1 carbon.base11)
@@ -190,7 +186,7 @@
 (custom-set-face! TSException [] {:fg carbon.base15 :bg carbon.none})
 (custom-set-face! TSField [] {:fg carbon.base04 :bg carbon.none})
 (custom-set-face! TSFloat [] {:fg carbon.base15 :bg carbon.none})
-(custom-set-face! TSFunction [] {:fg carbon.base12})
+(custom-set-face! TSFunction [:bold] {:fg carbon.base12})
 (custom-set-face! TSFuncBuiltin [] {:fg carbon.base12 :bg carbon.none})
 (custom-set-face! TSFuncMacro [] {:fg carbon.base07 :bg carbon.none})
 (custom-set-face! TSInclude [] {:fg carbon.base09 :bg carbon.none})
@@ -212,7 +208,7 @@
 (custom-set-face! TSString [] {:fg carbon.base14 :bg carbon.none})
 (custom-set-face! TSStringRegex [] {:fg carbon.base07 :bg carbon.none})
 (custom-set-face! TSStringEscape [] {:fg carbon.base15 :bg carbon.none})
-(custom-set-face! TSSymbol [] {:fg carbon.base15})
+(custom-set-face! TSSymbol [:bold] {:fg carbon.base15})
 (custom-set-face! TSTag [] {:fg carbon.base04 :bg carbon.none})
 (custom-set-face! TSTagDelimiter [] {:fg carbon.base15 :bg carbon.none})
 (custom-set-face! TSText [] {:fg carbon.base04 :bg carbon.none})
@@ -239,13 +235,14 @@
 (custom-set-face! TermCursorNC [] {:fg carbon.base00 :bg carbon.base04})
 
 ;; minimal highlights
-(custom-set-face! StatusLine [] {:fg carbon.base04 :bg carbon.base00})
+(custom-set-face! StatusLine [] {:fg carbon.base03 :bg carbon.base00})
+(custom-set-face! WinBar [] {:fg :#a2a9b0 :bg carbon.base00})
+(custom-set-face! StatusNormal [:underline] {:fg :#a2a9b0 :bg carbon.base00})
 (custom-set-face! StatusPosition [] {:fg :#a2a9b0 :bg carbon.base00})
-(custom-set-face! StatusNormal [] {:fg carbon.base00 :bg carbon.base09})
 (custom-set-face! StatusReplace [] {:fg carbon.base00 :bg carbon.base08})
-(custom-set-face! StatusInsert [] {:fg carbon.base00 :bg carbon.base11})
+(custom-set-face! StatusInsert [] {:fg carbon.base00 :bg carbon.base12})
 (custom-set-face! StatusVisual [] {:fg carbon.base00 :bg carbon.base14})
-(custom-set-face! StatusTerminal [] {:fg carbon.base00 :bg carbon.base15})
+(custom-set-face! StatusTerminal [] {:fg carbon.base00 :bg carbon.base11})
 (custom-set-face! StatusLineDiagnosticWarn [:bold] {:fg carbon.base14 :bg carbon.base00})
 (custom-set-face! StatusLineDiagnosticError [:bold] {:fg carbon.base09 :bg carbon.base00})
 (link! StatusCommand => StatusNormal)
