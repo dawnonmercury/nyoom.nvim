@@ -39,7 +39,7 @@
   (import-macros {: autocmd! : augroup! : clear!} :macros.event-macros)
   (local {: contains?} (require :macros.lib.seq))
   (when (client.supports_method "textDocument/formatting")
-    (augroup! lsp-format-before-saving
+    (augroup! lsp-format-on-saving
       (clear! {:buffer bufnr})
       (autocmd! BufWritePre <buffer>
         '(vim.lsp.buf.format {:filter (fn [client] (not (contains? [:jsonls :tsserver] client.name)))
