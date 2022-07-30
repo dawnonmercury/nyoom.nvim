@@ -140,7 +140,7 @@
                    (if (= vim.o.background :dark) 
                        (set! background :light)
                        (set! background :dark))
-                  (require :oxocarbon))
+                  (colorscheme muses))
  
                  {:desc :Background}]
                 [:n

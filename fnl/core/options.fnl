@@ -73,6 +73,6 @@
 (set! completeopt [:menu :menuone :preview :noinsert])
 
 ;; colorscheme
+(set! termguicolors)
 (set! guifont "Comic Code Ligatures:h15")
-(set! background :dark)
 
