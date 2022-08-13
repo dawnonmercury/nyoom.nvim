@@ -73,6 +73,7 @@
 (set! completeopt [:menu :menuone :preview :noinsert])
 
 ;; colorscheme
+<<<<<<< HEAD
 (set! termguicolors)
 (set! guifont "Comic Code Ligatures:h15")
 (colorscheme muses)
