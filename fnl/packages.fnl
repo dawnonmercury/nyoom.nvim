@@ -42,6 +42,14 @@
 ;; Put your plugins here
 ;; ---------------------
 
+;; Vimtex
+(use-package! :lervag/vimtex {:ft :tex})
+; colorscheme
+(use-package! :dawnonmercury/zenbones.nvim {:requires [(pack :rktjmp/lush.nvim)]})
+
+;; Renpy highlighting
+(use-package! :chaimleib/vim-renpy)
+
 ;; Send plugins to packer
 (echo! "Installing Plugins")
 (unpack!)

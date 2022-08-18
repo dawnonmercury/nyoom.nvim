@@ -95,9 +95,6 @@
 (set! grepprg "rg --vimgrep")
 (set! grepformat "%f:%l:%c:%m")
 
-;; colorscheme
-(set! background :dark)
-
 (nyoom-module-p! ui.modeline
   (do
    (import-macros {: set! : local-set!} :macros)

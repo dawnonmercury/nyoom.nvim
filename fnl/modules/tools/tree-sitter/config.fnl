@@ -66,13 +66,13 @@
         :indent {:enable true}
         :rainbow {:enable true 
                   :extended_mode true
-                  :colors [:#878d96
-                           :#a8a8a8
-                           :#8d8d8d
-                           :#a2a9b0
-                           :#8f8b8b
-                           :#ada8a8
-                           :#878d96]}
+                  :colors [:#df2566
+                           :#45ac57
+                           :#e0ad37
+                           :#5566bf
+                           :#9a46ba
+                           :#569aac
+                           :#348989]}
         :incremental_selection {:enable true
                                 :keymaps {:init_selection :gnn
                                           :node_incremental :grn

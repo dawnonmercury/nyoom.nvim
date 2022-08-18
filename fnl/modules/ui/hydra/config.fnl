@@ -367,3 +367,34 @@
                     [:q
                      nil 
                      {:exit true :nowait true}]]})))
+
+;; VimTex
+(local vimtex-hint "
+                VimTex
+    _c_: Continuous Compile ^^^^
+    _s_: Snapshot Compile ^^^^
+    _e_: Clean Up Extra Files ^^^^
+    ^
+    ^^^^^^^             _<Esc>_
+       ")
+
+(Hydra {:name :VimTex
+        :hint vimtex-hint
+        :config {:color :amaranth
+        :invoke_on_body true
+        :hint {:border :solid :position :middle}}
+        :mode [:n :x]
+        :body :<leader>v
+        :heads [[:c
+                  (fn []
+                    (vim.cmd :VimtexCompile))]
+                [:s
+                  (fn []
+                    (vim.cmd :VimtexCompileSS))]
+                [:e
+                  (fn []
+                    (vim.cmd :VimtexClean!))]
+                  [:<Esc>
+                    nil
+                    {:exit true}]]})
+

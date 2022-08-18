@@ -89,7 +89,7 @@
                  :flags {:debounce_text_changes 150}})
 
 ;; conditional lsp servesr
-(local lsp-servers [])
+(local lsp-servers [:texlab])
 
 (nyoom-module-p! lang.java
   (table.insert lsp-servers :jdtls))
@@ -132,8 +132,8 @@
     (nyoom-module-p! lang.sh
       (table.insert null-ls-sources formatting.shfmt))
 
-    (setup {: null-ls-sources
-            :on_attach on-attach})))
+   (setup {: null-ls-sources
+           :on_attach on-attach})))
 
 ;; for trickier servers you can change up the defaults
 (lsp.sumneko_lua.setup {:on_attach on-attach
