@@ -1,6 +1,6 @@
 (local {: setup} (require :modes))
 
-(setup {:colors {:insert "#be95ff"
-                 :delete "#ff7eb6"
-                 :visual "#82cfff"
-                 :copy "#42be65"}})
+(setup {:colors {:insert "#5576cf"
+                 :delete "#df2566"
+                 :visual "#e0bd47"
+                 :copy "#45ac57"}})

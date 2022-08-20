@@ -7,7 +7,6 @@
 ;; 'require' function. This is the default:
 
 ;; colorscheme
-(set! termguicolors)
 (colorscheme muses)
 
 ;; The set! macro sets vim.opt options. By default it sets the option to true 

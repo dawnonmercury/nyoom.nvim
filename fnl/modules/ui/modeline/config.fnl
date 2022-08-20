@@ -46,27 +46,27 @@
                  :warnings (. count vim.diagnostic.severity.WARN)
                  :info (. count vim.diagnostic.severity.INFO)
                  :hints (. count vim.diagnostic.severity.HINT)})
-  (string.format " %%#StatusLineDiagnosticWarn#%s %%#StatusLineDiagnosticError#%s "
+  (string.format " [%%#StatusLineDiagnosticWarn#%s %%#StatusLineDiagnosticError#%s] "
                  (or (. result :warnings) 0) (or (. result :errors) 0)))
 (global Statusline {})
 (set Statusline.statusline (fn []
                              (table.concat [(color)
-                                            (: (string.format " %s "
+                                            (: (string.format " [%s] "
                                                               (. modes
                                                                  (. (vim.api.nvim_get_mode)
                                                                     :mode)))
                                                :upper)
                                             "%#StatusLine#"
-                                            " %f "
+                                            " [%f] "
                                             "%#StatusPosition#"
                                             (get-git-status)
                                             "%="
                                             (get-lsp-diagnostic)
                                             "%#StatusPosition#"
-                                            " %l:%c "])))
+                                            " [%l:%c] [%P] "])))
 (set Statusline.winbar (fn []
                          (table.concat ["%#WinBar#"
-                                        " %f "])))
+                                        " [%f] %m%r%h%w "])))
 (set! laststatus 3)
 (set! cmdheight 0)
 (set! winbar "%!v:lua.Statusline.winbar()")

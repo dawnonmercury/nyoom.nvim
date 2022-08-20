@@ -86,4 +86,5 @@
 (set! grepformat "%f:%l:%c:%m")
 
 ;; colorscheme
-(nyoom-module-p! ui.nyoom)
+(nyoom-module-p! ui.nyoom
+  (set! termguicolors))
