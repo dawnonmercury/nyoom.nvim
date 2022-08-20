@@ -43,7 +43,8 @@
 ;; ---------------------
 
 ;; Vimtex
-(use-package! :lervag/vimtex {:ft :tex})
+(use-package! :lervag/vimtex {:ft [:tex :bib]})
+
 ; colorscheme
 (use-package! :dawnonmercury/zenbones.nvim {:requires [(pack :rktjmp/lush.nvim)]})
 

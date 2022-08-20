@@ -45,14 +45,14 @@
         tools.pastebin             ; interacting with pastebin platforms
         tools.lsp                  ; :vscode 
         tools.neogit               ; a git porcelain for Neovim
-        ;;tools.rgb                ; creating color strings
+        tools.rgb                  ; creating color strings
         tools.tree-sitter          ; syntax and parsing, sitting in a tree...
 
         lang.java                  ; the poster child for carpal tunnel syndrome
         ;;lang.julia               ; a better, faster MATLAB
         lang.markdown              ; writing docs for people to ignore
         lang.neorg                 ; organize your plain life in plain text
-        lang.nix                   ; I hereby declare "nix geht mehr!"
+        ;;lang.nix                 ; I hereby declare "nix geht mehr!"
         lang.rust                  ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
         ;;lang.sh                  ; she sells {ba,z,fi}sh shells on the C xor
 

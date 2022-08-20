@@ -141,14 +141,14 @@
                        (if (= vim.o.background :dark) 
                            (set! background :light)
                            (set! background :dark))
-                      (require :oxocarbon))
+                      (colorscheme muses))
      
                      {:desc :Background}]
                     [:n
                      (fn []
                        (if (= vim.o.number true) 
                            (set! nonumber)
-                           (set! number)))
+                           (set! number)))    
                      {:desc :number}]
                     [:r
                      (fn []
@@ -368,33 +368,44 @@
                      nil 
                      {:exit true :nowait true}]]})))
 
-;; VimTex
+;; VimTeX
 (local vimtex-hint "
-                VimTex
-    _c_: Continuous Compile ^^^^
-    _s_: Snapshot Compile ^^^^
-    _e_: Clean Up Extra Files ^^^^
+
+    ^VimTex
     ^
-    ^^^^^^^             _<Esc>_
+    _c_: Continuous Compile
+    _s_: Snapshot Compile
+    _e_: Clean Up Extra Files
+    _w_: Count words
+    ^
+    ^^^^^^                   _<Esc>_^^^
+
        ")
 
-(Hydra {:name :VimTex
+(Hydra {:name :VimTeX
         :hint vimtex-hint
         :config {:color :amaranth
-        :invoke_on_body true
-        :hint {:border :solid :position :middle}}
+                 :invoke_on_body true
+                 :hint {:border :solid :position :middle}}
         :mode [:n :x]
         :body :<leader>v
         :heads [[:c
                   (fn []
-                    (vim.cmd :VimtexCompile))]
+                    (vim.cmd :VimtexCompile))
+                  {:exit true}]
                 [:s
                   (fn []
-                    (vim.cmd :VimtexCompileSS))]
+                    (vim.cmd :VimtexCompileSS))
+                  {:exit true}]
                 [:e
                   (fn []
-                    (vim.cmd :VimtexClean!))]
-                  [:<Esc>
-                    nil
-                    {:exit true}]]})
+                    (vim.cmd :VimtexClean!))
+                  {:exit true}]
+                [:w
+                  (fn []
+                    (vim.cmd :VimtexCountWords))
+                  {:exit true}] 
+                [:<Esc>
+                  nil
+                  {:exit true}]]})
 
