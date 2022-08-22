@@ -371,13 +371,12 @@
 ;; VimTeX
 (local vimtex-hint "
 
-    ^VimTex
-    ^
-    _c_: Continuous Compile
-    _s_: Snapshot Compile
-    _e_: Clean Up Extra Files
-    _w_: Count words
-    ^
+    ^VimTex                      
+    ^                            
+    _c_: Continuous Compile      
+    _s_: Snapshot Compile        
+    _e_: Clean Up Extra Files    
+    ^                            
     ^^^^^^                   _<Esc>_^^^
 
        ")
@@ -401,10 +400,6 @@
                   (fn []
                     (vim.cmd :VimtexClean!))
                   {:exit true}]
-                [:w
-                  (fn []
-                    (vim.cmd :VimtexCountWords))
-                  {:exit true}] 
                 [:<Esc>
                   nil
                   {:exit true}]]})
