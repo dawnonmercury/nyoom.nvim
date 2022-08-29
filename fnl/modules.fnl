@@ -7,7 +7,7 @@
         (telescope +native)  ; the search engine of the future
 
         :ui
-        nyoom                ; what makes Nyoom look the way it does
+        ;;nyoom              ; what makes Nyoom look the way it does
         dashboard            ; a nifty splash screen for neovim
         ;;nyoom-quit         ; buggy, terrible implementation of doom-quit. 
         hydra                ; the heads don't byte
@@ -64,11 +64,11 @@
         lua                  ; one-based indices? one-based indices
         markdown             ; writing docs for people to ignore
         ;;nim                ; python + lisp at the speed of c
-        ;;neorg              ; organize your plain life in plain text, the neovim way TODO +export +present
+        neorg                ; organize your plain life in plain text, the neovim way TODO +export +present
         ;;(org +pretty)      ; organize your plain life in plain text, the emacs way
-        nix                  ; I hereby declare "nix geht mehr!"
+        ;;nix                ; I hereby declare "nix geht mehr!"
         ;;python             ; beautiful is better than ugly
-        rust                 ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+        ;;rust               ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
         (sh +fish))          ; she sells {ba,z,fi}sh shells on the C xor
         ;;zig                ; C, but simpler
 
