@@ -2,7 +2,24 @@
 (local dap (require :dap))
 
 ;; lua setup
-(nyoom-module-p! lang.lua
+(nyoom-module-p! cc
+  (do
+    (set dap.configurations.cpp
+         [{:program (fn []
+                      (vim.fn.input "Path to executable: " (.. (vim.fn.getcwd) "/")
+                                    :file))
+           :stopOnEntry false
+           :request :launch
+           :type :lldb
+           :args {}
+           :name :Launch
+           :cwd "${workspaceFolder}"}])
+    (set dap.adapters.lldb {:type :executable
+                            :command :lldb-vscode
+                            :name :lldb})
+    (set dap.configurations.c dap.configurations.cpp)))
+
+(nyoom-module-p! lua
   (do
     (packadd! one-small-step-for-vimkind)
     (set dap.configurations.lua [{:host (fn []
@@ -25,7 +42,12 @@
                                         :type :server
                                         :host config.host})))))
 
+(nyoom-module-p! python
+   (do
+     (packadd! nvim-dap-python)
+     ((. (require :dap-python) :setup) "~/.virtualenvs/debugpy/bin/python")))
+
 (packadd! nvim-dap-ui)
-(local {: ui-setup} (require :dapui))
-(ui-setup)
+(local {: setup} (require :dapui))
+(setup)
 
