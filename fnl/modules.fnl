@@ -7,7 +7,7 @@
         (telescope +native)  ; the search engine of the future
 
         :ui
-        ;;nyoom              ; what makes Nyoom look the way it does
+        nyoom                ; what makes Nyoom look the way it does
         dashboard            ; a nifty splash screen for neovim
         ;;nyoom-quit         ; buggy, terrible implementation of doom-quit. 
         hydra                ; the heads don't byte
