@@ -6,9 +6,9 @@ case "${1:-}" in
     printf "%s\n%s\n  %s\n%s\n" \
       "usage: $(basename "$0") [options] [script [args]]" \
       "Available options are:" \
-      "install  install required plugins" \
-      "sync  sync nyoom modules and plugins" \
-      "upgrade  upgrade Nyoom Nvim"
+      "install - install required plugins" \
+      "  sync    - sync nyoom modules and plugins" \
+      "  upgrade - upgrade Nyoom Nvim"
     ;;
   install)
     printf -- 'Installing Required Plugins... \n';

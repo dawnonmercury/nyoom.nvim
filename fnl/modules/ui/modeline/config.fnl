@@ -20,7 +20,7 @@
               :rm :r
               :r? :r
               :! "!"
-              :t :})
+              :t :>})
 
 (set! laststatus 3)
 (set! cmdheight 0)
@@ -32,7 +32,7 @@
   "")
 
 (fn get-filetype []
-  (.. "%#NormalNC#" vim.bo.filetype))
+  (.. "%#NormalNC#" "[" vim.bo.filetype "]"))
 
 (fn get-bufnr []
   (.. "%#Comment#" (vim.api.nvim_get_current_buf)))
@@ -50,10 +50,10 @@
     mode-color))
 
 (fn get-fileinfo []
-  (var filename (or (and (= (vim.fn.expand "%") "") " nyoom-nvim ")
+  (var filename (or (and (= (vim.fn.expand "%") "") " [nyoom-nvim] ")
                     (vim.fn.expand "%:t")))
   (when (not= filename " nyoom-nvim ")
-        (set filename (.. " " filename " ")))
+        (set filename (.. "[" filename "]")))
   (.. "%#Normal#" filename))
 
 ;; but overwrite them with conditional features if enabled
@@ -96,7 +96,7 @@
 
 (fn get-searchcount []
   (when (= vim.v.hlsearch 0)
-    (lua "return \"%#Normal# %l:%c \""))
+    (lua "return \"%#Normal# [%l:%c] [%P] \""))
   (local (ok count) (pcall vim.fn.searchcount {:recompute true}))
   (when (or (or (not ok) (= count.current nil)) (= count.total 0))
     (lua "return \"\""))
@@ -105,7 +105,7 @@
   (local too-many (: ">%d" :format count.maxcount))
   (local total (or (and (> count.total count.maxcount) too-many)
                    count.total))
-  (.. "%#Normal#" (: " %s matches " :format total)))
+  (.. "%#Normal#" (: " [%s matches] " :format total)))
 
 (set Statusline.statusline (fn []
                              (table.concat [(color)
