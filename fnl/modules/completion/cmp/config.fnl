@@ -59,8 +59,6 @@
                       {:name :luasnip}
                       (nyoom-module-p! eval
                         {:name :conjure})
-                      (nyoom-module-p! rust
-                        {:name :crates})
                       {:name :buffer}
                       {:name :path}]
             :formatting {:fields {1 :kind 2 :abbr 3 :menu}
