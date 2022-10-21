@@ -17,9 +17,9 @@
 
 ;; carbon palette 
 ;; (nyoom-module-p! nyoom.+carbon
-(local base00 :#161616)
-(local base06 :#ffffff)
-(local base09 :#78a9ff)
+(local base00 :#f3efed)
+(local base06 :#569aac)
+(local base09 :#bf455f)
 
 (local carbon {:base00 base00 ;; The origin color or the Carbon palette
                :base01 (blend-hex base00 base06 0.085) ;; A brighter shade color based on base00
@@ -28,16 +28,16 @@
                :base04 (blend-hex base00 base06 0.82)  ;; The origin color or the Snow Storm sequence.
                :base05 (blend-hex base00 base06 0.95)  ;; A brighter shade color of base04
                :base06 base06 ;; The brightest shade color based on base04
-               :base07 "#08bdba" ;; A calm and highly contrasted color reminiscent of glowing ice
-               :base08 "#3ddbd9" ;; The bright and shiny primary accent color reminiscent of pure and clear energy
+               :base07 "#484141" ;; A calm and highly contrasted color reminiscent of glowing ice
+               :base08 "#c4bcb9" ;; The bright and shiny primary accent color reminiscent of pure and clear energy
                :base09 base09 ;; And the sky was never quite the same shade of blue again
-               :base10 "#ee5396" ;; A dark and intensive color reminiscent of the withering flowers come fall
-               :base11 "#33b1ff" ;; But never have I been a blue calm sea. I have always been a storm
-               :base12 "#ff7eb6" ;; A more darkened and less saturated color reminiscent of cherry blossoms
-               :base13 "#42be65" ;; Nature in her green, tranquil woods heals and soothes all afflictions
-               :base14 "#be95ff" ;; I want to watch wisteria grow right over my bare feet
-               :base15 "#82cfff" ;; A book must be an ice axe to break the seas frozen inside our soul
-               :blend  "#131313" ;; Blend of #000000 & base00 for darker accents 
+               :base10 "#508b44" ;; A dark and intensive color reminiscent of the withering flowers come fall
+               :base11 "#c4ab36" ;; But never have I been a blue calm sea. I have always been a storm
+               :base12 "#4455ae" ;; A more darkened and less saturated color reminiscent of cherry blossoms
+               :base13 "#895498" ;; Nature in her green, tranquil woods heals and soothes all afflictions
+               :base14 "#348989" ;; I want to watch wisteria grow right over my bare feet
+               :base15 "#585151" ;; A book must be an ice axe to break the seas frozen inside our soul
+               :blend  "#d1cdcb" ;; Blend of #000000 & base00 for darker accents 
                :none :NONE})
 
 ;; terminal 
