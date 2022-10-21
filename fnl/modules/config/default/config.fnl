@@ -1,4 +1,6 @@
-(import-macros {: nyoom-module-p! : set! : augroup! : autocmd! : command! : warn!} :macros)
+(import-macros {: nyoom-module-p! : set! : augroup! : autocmd! : command!} :macros)
+(local {: autoload} (require :core.lib.autoload))
+(local {: warn!} (autoload :core.lib.io))
 
 ;; Restore cursor on exit
 (augroup! restore-cursor-on-exit

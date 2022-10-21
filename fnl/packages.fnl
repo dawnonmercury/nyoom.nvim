@@ -1,4 +1,5 @@
-(import-macros {: packadd! : pack : rock : use-package! : rock! : unpack! : echo!} :macros)
+(import-macros {: packadd! : pack : rock : use-package! : rock! : unpack!} :macros)
+(local {: echo!} (require :core.lib.io))
 
 ;; Load packer
 (echo! "Loading Packer")
@@ -43,9 +44,6 @@
 ;; ---------------------
 ;; Put your plugins here
 ;; ---------------------
-
-;; Vimtex
-(use-package! :lervag/vimtex {:ft [:tex :bib]})
 
 ; colorscheme
 (use-package! :dawnonmercury/zenbones.nvim {:requires [(pack :rktjmp/lush.nvim)]})
