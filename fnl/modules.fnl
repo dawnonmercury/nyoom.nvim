@@ -49,7 +49,7 @@
         ;;magma              ; tame Jupyter notebooks
         mason                ; setting your tools in stone
         eval                 ; run code, run (also, repls)
-        antifennel           ; hate fennel? write lua and compile it back
+        ;;antifennel         ; hate fennel? write lua and compile it back
         pastebin             ; interacting with pastebin platforms
         lsp                  ; :vscode 
         (neogit +forge)      ; a git porcelain for Neovim
