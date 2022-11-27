@@ -80,6 +80,6 @@
         ;;literate           ; literate configurations for neovim
 
 
-(nyoom! :app
-        calendar)
+(nyoom! :app)
+        ;;calendar)
         ;;spotify
