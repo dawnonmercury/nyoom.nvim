@@ -51,6 +51,9 @@
 ;; Renpy highlighting
 (use-package! :chaimleib/vim-renpy)
 
+;; Discord rich presence
+(use-package! :andweeb/presence.nvim)
+
 ;; Send plugins to packer
 (echo! "Installing Packages")
 (unpack!)
