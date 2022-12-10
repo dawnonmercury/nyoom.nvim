@@ -8,4 +8,5 @@
                       :<leader>f
                       :<leader>z
                       :<leader>m
+                      :<leader>t
                       :<leader>d]})

@@ -426,7 +426,7 @@
                                       :hint {:border :solid :position :middle}
                                       :buffer true}
                              :mode [:n :x]
-                             :body :<leader>m
+                             :body :<leader>t
                              :heads [[:c
                                       (fn []
                                         (vim.cmd :VimtexCompile))
