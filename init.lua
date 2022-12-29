@@ -1,8 +1,8 @@
 if pcall(require, "hotpot") then
     -- Setup hotpot.nvim
     require("hotpot").setup({
-        enable_hotpot_diagnostics = false,
         provide_require_fennel = true,
+        enable_hotpot_diagnostics = false,
         compiler = {
             modules = {
                 -- not default but recommended, align lua lines with fnl source

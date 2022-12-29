@@ -1,43 +1,49 @@
 ;; fennel-ls: macro-file
 
-(local {: nil? : str? : tbl? : ->str : first : second : all? : begins-with?}
-       (require :core.lib))
-
-(local {: tset-default} (require :core.lib.tables))
+(local {: deep-merge} (require :core.lib.tables))
 (local {: djb2} (require :core.lib.crypt))
+(local {: nil?
+        : str?
+        : tbl?
+        : ->str
+        : first
+        : second
+        : all?
+        : begins-with?
+        : count} (require :core.lib))
 
-(λ expr->str [expr]
+(lambda expr->str [expr]
   `(macrodebug ,expr nil))
 
-(tset-default _G :nyoom/pack [])
-(tset-default _G :nyoom/rock [])
-(tset-default _G :nyoom/modules {})
+(tset _G :nyoom/pack [])
+(tset _G :nyoom/rock [])
+(tset _G :nyoom/modules {})
 
-(λ fn? [x]
+(lambda fn? [x]
   "Checks if `x` is a function definition.
   Cannot check if a symbol is a function in compile time."
   (and (list? x)
        (or (= `fn (first x)) (= `hashfn (first x)) (= `lambda (first x))
            (= `partial (first x)))))
 
-(λ quoted? [x]
+(lambda quoted? [x]
   "Check if `x` is a list that begins with `quote`."
   (and (list? x) (= `quote (first x))))
 
-(λ quoted->fn [expr]
+(lambda quoted->fn [expr]
   "Converts an expression like `(quote (+ 1 1))` into `(fn [] (+ 1 1))`."
   (assert-compile (quoted? expr) "expected quoted expression for expr" expr)
   (let [non-quoted (second expr)]
     `(fn []
        ,non-quoted)))
 
-(λ quoted->str [expr]
+(lambda quoted->str [expr]
   "Converts a quoted expression like `(quote (+ 1 1))` into an string with its shorthand form."
   (assert-compile (quoted? expr) "expected quoted expression for expr" expr)
   (let [non-quoted (second expr)]
     (.. "'" (view non-quoted))))
 
-(λ expand-exprs [exprs]
+(lambda expand-exprs [exprs]
   "Converts a list of expressions into either an expression - if only one
   expression is in the list - or a do-expression containing the expressions."
   (if (> (length exprs) 1)
@@ -45,7 +51,7 @@
          ,(unpack exprs))
       (first exprs)))
 
-(λ gensym-checksum [x ?options]
+(lambda gensym-checksum [x ?options]
   "Generates a new symbol from the checksum of the object passed as a parameter
   after it is casted into an string using the `view` function.
   You can also pass a prefix or a suffix into the options optional table.
@@ -55,12 +61,12 @@
         suffix (or options.suffix "")]
     (sym (.. prefix (djb2 (view x)) suffix))))
 
-(λ vlua [x]
+(lambda vlua [x]
   "Return a symbol mapped to `v:lua.%s()` where `%s` is the symbol."
   (assert-compile (sym? x) "expected symbol for x" x)
   (string.format "v:lua.%s()" (->str x)))
 
-(λ colorscheme [scheme]
+(lambda colorscheme [scheme]
   "Set a colorscheme using the vim.api.nvim_cmd API.
   Accepts the following arguements:
   scheme -> a symbol.
@@ -72,7 +78,7 @@
   (let [scheme (->str scheme)]
     `(vim.api.nvim_cmd {:cmd :colorscheme :args [,scheme]} {})))
 
-(λ custom-set-face! [name attributes colors]
+(lambda custom-set-face! [name attributes colors]
   "Sets a highlight group globally using the vim.api.nvim_set_hl API.
   Accepts the following arguments:
   name -> a string.
@@ -111,7 +117,7 @@
                      true)]
     `(vim.api.nvim_set_hl 0 ,name ,definition)))
 
-(λ set! [name ?value]
+(lambda set! [name ?value]
   "Set a vim option using the vim.opt.<name> API.
   Accepts the following arguments:
   name -> must be a symbol.
@@ -152,7 +158,7 @@
                                 _ `(tset vim.opt ,name ,value))))]
     (expand-exprs exprs)))
 
-(λ local-set! [name ?value]
+(lambda local-set! [name ?value]
   "Set a vim option using the vim.opt_local.<name> API.
   Accepts the following arguments:
   name -> must be a symbol.
@@ -193,7 +199,7 @@
                                 _ `(tset vim.opt_local ,name ,value))))]
     (expand-exprs exprs)))
 
-(λ shared-command! [api-function name command ?options]
+(lambda shared-command! [api-function name command ?options]
   (assert-compile (sym? api-function) "expected symbol for api-function"
                   api-function)
   (assert-compile (sym? name) "expected symbol for name" name)
@@ -215,7 +221,7 @@
         command (if (quoted? command) (quoted->fn command) command)]
     `(,api-function ,name ,command ,options)))
 
-(λ command! [name command ?options]
+(lambda command! [name command ?options]
   "Create a new user command using the vim.api.nvim_create_user_command API.
 
   Accepts the following arguments:
@@ -237,7 +243,7 @@
   ```"
   (shared-command! `vim.api.nvim_create_user_command name command ?options))
 
-(λ local-command! [name command ?options]
+(lambda local-command! [name command ?options]
   "Create a new user command using the vim.api.nvim_buf_create_user_command API.
 
   Accepts the following arguments:
@@ -259,7 +265,7 @@
   ```"
   (shared-command! `vim.api.nvim_buf_create_user_command name command ?options))
 
-(λ autocmd! [event pattern command ?options]
+(lambda autocmd! [event pattern command ?options]
   "Create an autocommand using the nvim_create_autocmd API.
 
   Accepts the following arguments:
@@ -329,7 +335,7 @@
                     options)]
     `(vim.api.nvim_create_autocmd ,event ,options)))
 
-(λ augroup! [name ...]
+(lambda augroup! [name ...]
   "Create an augroup using the nvim_create_augroup API.
   Accepts either a name or a name and a list of autocmd statements.
 
@@ -364,7 +370,7 @@
                         (let [[_ ?options] expr]
                           `(clear! ,name ,?options)))))))
 
-(λ clear! [name ?options]
+(lambda clear! [name ?options]
   "Clears an augroup using the nvim_clear_autocmds API.
 
   Example of use:
@@ -385,7 +391,7 @@
                   (tset :group name))]
     `(vim.api.nvim_clear_autocmds ,options)))
 
-(λ pack [identifier ?options]
+(lambda pack [identifier ?options]
   "Return a mixed table with the identifier as the first sequential element and
   options as hash-table items.
   See https://github.com/wbthomason/packer.nvim for information about the
@@ -408,7 +414,7 @@
                                                          (->str v)))
                     :defer (values :setup
                                    (let [package (->str v)]
-                                     `(λ []
+                                     `(lambda []
                                         (vim.api.nvim_create_autocmd [:BufRead
                                                                       :BufWinEnter
                                                                       :BufNewFile]
@@ -429,7 +435,7 @@
     (doto options
       (tset 1 identifier))))
 
-(λ rock [identifier ?options]
+(lambda rock [identifier ?options]
   "Return a mixed table with the identifier as the first sequential element and
   options as hash-table items.
   See https://github.com/wbthomason/packer.nvim for information about the
@@ -441,7 +447,7 @@
     (doto options
       (tset 1 identifier))))
 
-(λ use-package! [identifier ?options]
+(lambda use-package! [identifier ?options]
   "Declares a plugin with its options. This macro adds it to the nyoom/pack
   global table to later be used in the `unpack!` macro.
   See https://github.com/wbthomason/packer.nvim for information about the
@@ -451,7 +457,7 @@
       (assert-compile (tbl? ?options) "expected table for options" ?options))
   (table.insert _G.nyoom/pack (pack identifier ?options)))
 
-(λ rock! [identifier ?options]
+(lambda rock! [identifier ?options]
   "Declares a rock with its options. This macro adds it to the nyoom/rock
   global table to later be used in the `unpack!` macro.
   See https://github.com/wbthomason/packer.nvim for information about the
@@ -461,7 +467,7 @@
       (assert-compile (tbl? ?options) "expected table for options" ?options))
   (table.insert _G.nyoom/rock (rock identifier ?options)))
 
-(λ unpack! []
+(lambda unpack! []
   "Initializes the plugin manager with the plugins previously declared and
   their respective options."
   (let [packs (icollect [_ v (ipairs _G.nyoom/pack)]
@@ -473,7 +479,7 @@
                                        ,(unpack (icollect [_ v (ipairs packs) &into rocks]
                                                   v))))))
 
-(λ packadd! [package]
+(lambda packadd! [package]
   "Loads a package using the vim.api.nvim_cmd API.
   Accepts the following arguements:
   package -> a symbol.
@@ -485,7 +491,7 @@
   (let [package (->str package)]
     `(vim.api.nvim_cmd {:cmd :packadd :args [,package]} {})))
 
-(λ map! [[modes] lhs rhs ?options]
+(lambda map! [[modes] lhs rhs ?options]
   "Add a new mapping using the vim.keymap.set API.
 
   Accepts the following arguments:
@@ -528,7 +534,7 @@
         rhs (if (quoted? rhs) (quoted->fn rhs) rhs)]
     `(vim.keymap.set ,modes ,lhs ,rhs ,options)))
 
-(λ buf-map! [[modes] lhs rhs ?options]
+(lambda buf-map! [[modes] lhs rhs ?options]
   "Add a new mapping using the vim.keymap.set API.
   Sets by default the buffer option.
 
@@ -564,7 +570,7 @@
                   (tset :buffer 0))]
     (map! [modes] lhs rhs options)))
 
-(λ let-with-scope! [[scope] name value]
+(lambda let-with-scope! [[scope] name value]
   (assert-compile (or (str? scope) (sym? scope))
                   "expected string or symbol for scope" scope)
   (assert-compile (or (= :b (->str scope)) (= :w (->str scope))
@@ -580,13 +586,13 @@
               :t `vim.t
               :g `vim.g) ,name ,value)))
 
-(λ let-global! [name value]
+(lambda let-global! [name value]
   (assert-compile (or (str? name) (sym? name))
                   "expected string or symbol for name" name)
   (let [name (->str name)]
     `(tset vim.g ,name ,value)))
 
-(λ let! [...]
+(lambda let! [...]
   "Set a vim variable using the vim.<scope>.name API.
   Accepts the following arguments:
   [scope] -> optional. Can be either [g], [w], [t] or [b]. It's either a symbol
@@ -608,7 +614,7 @@
     [name value] (let-global! name value)
     _ (error "expected let! to have at least two arguments: name value")))
 
-(λ sh [...]
+(lambda sh [...]
   "simple macro to run shell commands inside fennel"
   `(let [str# ,(accumulate [str# "" _ v# (ipairs [...])]
                  (if (in-scope? v#) `(.. ,str# " " ,v#)
@@ -619,7 +625,7 @@
      (fd#:close)
      (string.sub d# 1 (- (length d#) 1))))
 
-(λ nyoom! [...]
+(lambda nyoom! [...]
   "Recreation of the `doom!` macro for Nyoom
   See modules.fnl for usage
   Accepts the following arguments:
@@ -640,30 +646,27 @@
     (if (str? name)
         (set moduletag name)
         (if (sym? name)
-            (do
-              (let [name (->str name)
-                    include-path (.. :fnl.modules. moduletag "." name)
-                    config-path (.. :modules. moduletag "." name :.config)]
-                (tset registry name
-                      {:include-paths [include-path]
-                       :config-paths [config-path]})))
-            (do
-              (let [modulename (->str (first name))
-                    include-path (.. :fnl.modules. moduletag "." modulename)
-                    config-path (.. :modules. moduletag "." modulename :.config)
-                    [_ & flags] name]
-                (var includes [include-path])
-                (var configs [config-path])
-                (each [_ v (ipairs flags)]
-                  (let [flagmodule (.. modulename "." (->str v))
-                        flag-include-path (.. include-path "." (->str v))
-                        flag-config-path (.. :modules. moduletag "." flagmodule
-                                             :.config)]
-                    (table.insert includes flag-include-path)
-                    (table.insert configs flag-config-path)
-                    (tset registry flagmodule {})))
-                (tset registry modulename
-                      {:include-paths includes :config-paths configs}))))))
+            (let [name (->str name)
+                  include-path (.. :fnl.modules. moduletag "." name)
+                  config-path (.. :modules. moduletag "." name :.config)]
+              (tset registry name
+                    {:include-paths [include-path] :config-paths [config-path]}))
+            (let [modulename (->str (first name))
+                  include-path (.. :fnl.modules. moduletag "." modulename)
+                  config-path (.. :modules. moduletag "." modulename :.config)
+                  [_ & flags] name]
+              (var includes [include-path])
+              (var configs [config-path])
+              (each [_ v (ipairs flags)]
+                (let [flagmodule (.. modulename "." (->str v))
+                      flag-include-path (.. include-path "." (->str v))
+                      flag-config-path (.. :modules. moduletag "." flagmodule
+                                           :.config)]
+                  (table.insert includes flag-include-path)
+                  (table.insert configs flag-config-path)
+                  (tset registry flagmodule {})))
+              (tset registry modulename
+                    {:include-paths includes :config-paths configs})))))
 
   (fn register-modules [...]
     (each [_ mod (ipairs [...])]
@@ -676,12 +679,14 @@
        (tset _G :nyoom/modules ,modules)
        (. _G :nyoom/modules))))
 
-(λ nyoom-init-modules! []
-  "Initialize nyoom's module system"
+(lambda nyoom-init-modules! []
+  "Initializes nyoom's module system.
+  ```fennel
+  (nyoom-init-modules!)
+  ```"
   (fn init-module [module-name module-def]
-    `(do
-       ,(icollect [_ include-path (ipairs (or module-def.include-paths []))]
-          `(include ,include-path))))
+    (icollect [_ include-path (ipairs (or module-def.include-paths []))]
+      `(include ,include-path)))
 
   (fn init-modules [registry]
     (icollect [module-name module-def (pairs registry)]
@@ -690,12 +695,14 @@
   (let [inits (init-modules _G.nyoom/modules)]
     (expand-exprs inits)))
 
-(λ nyoom-compile-modules! []
-  "Compile and cache module files"
+(lambda nyoom-compile-modules! []
+  "Compiles and caches module files.
+  ```fennel
+  (nyoom-compile-modules!)
+  ```"
   (fn compile-module [module-name module-decl]
-    `(do
-       ,(icollect [_ config-path (ipairs (or module-decl.config-paths []))]
-          `,(pcall require config-path))))
+    (icollect [_ config-path (ipairs (or module-decl.config-paths []))]
+      `,(pcall require config-path)))
 
   (fn compile-modules [registry]
     (icollect [module-name module-def (pairs registry)]
@@ -704,7 +711,7 @@
   (let [source (compile-modules _G.nyoom/modules)]
     (expand-exprs [(unpack source)])))
 
-(λ nyoom-module! [name]
+(lambda nyoom-module! [name]
   "By default modules should be loaded through use-package!. Of course, not every
   modules needs a package. Sometimes we just want to load `config.fnl`. In this 
   case, we can hack onto packer.nvim, give it a fake package, and ask it to load a 
@@ -714,24 +721,34 @@
   (nyoom-module! tools.tree-sitter)
   ```"
   (assert-compile (sym? name) "expected symbol for name" name)
-  (let [name (->str name)]
-    (table.insert _G.nyoom/pack (pack name {:nyoom-module name}))))
+  (let [name (->str name)
+        hash (djb2 name)]
+    (table.insert _G.nyoom/pack (pack (.. :nyoom. hash) {:nyoom-module name}))))
 
-(λ nyoom-module-p! [name config]
-  "Checks if a module is enabled
+(lambda nyoom-module-p! [name ?config]
+  "Checks if a module is enabled. Return config if given, otherwise return 
+  true or false based on the state of the module
   Accepts the following arguements:
   name -> a symbol.
+  config -> (optional) a table
   Example of use:
   ```fennel
   (nyoom-module-p! tree-sitter)
+  (if (nyoom-module-p! tree-sitter)
+    (do ...))
   ```"
   (assert-compile (sym? name) "expected symbol for name" name)
   (let [name (->str name)
         module-exists (not= nil (. _G.nyoom/modules name))]
-    (when module-exists
-      `,config)))
+    (if (nil? ?config)
+        (if module-exists
+            `true
+            `false)
+        (let [config (or ?config)]
+          (when module-exists
+            `,config)))))
 
-(λ nyoom-module-ensure! [name]
+(lambda nyoom-module-ensure! [name]
   "Ensure a module is enabled
   Accepts the following arguements:
   name -> a symbol.
@@ -744,6 +761,38 @@
     (let [msg (.. "One of your installed modules depends on " (->str name)
                   ". Please enable it")]
       `(vim.notify ,msg vim.log.levels.WARN))))
+
+(lambda nyoom-package-count! []
+  "Return number of installed packages"
+  (let [package-count (count _G.nyoom/pack)]
+    `,package-count))
+
+(lambda nyoom-module-count! []
+  "Return number of installed modules"
+  (let [module-count (count _G.nyoom/modules)]
+    `,module-count))
+
+;; (tset _G :nyoom/servers [])
+;; (tset _G :nyoom/lintesr [])
+;; (tset _G :nyoom/formatters [])
+;; (tset _G :nyoom/parsers [])
+;; (tset _G :nyoom/cmp [])
+;; 
+;; (lambda nyoom-add-language-server! [server ?config]
+;;   (assert-compile (sym? server) "expected symbol for server" server)
+;;   (let [server (->str server)
+;;         config (or ?config)]
+;;     (tset _G :nyoom/servers server config)))
+;; 
+;; (lambda nyoom-load-language-servers! []
+;;   (let [servers _G.nyoom/servers]
+;;     (each [server server_config (pairs servers)]
+;;       ((. (. lsp server) :setup) (deep-merge defaults server_config)))))
+;; 
+;; (lambda nyoom-add-linter! [])
+;; (lambda nyoom-add-formatter! [])
+;; (lambda nyoom-add-parsers! [])
+;; (lambda nyoom-add-cmp-source! [])
 
 {: expr->str
  : vlua
@@ -771,4 +820,6 @@
  : nyoom-compile-modules!
  : nyoom-module!
  : nyoom-module-p!
- : nyoom-module-ensure!}
+ : nyoom-module-ensure!
+ : nyoom-package-count!
+ : nyoom-module-count!}
