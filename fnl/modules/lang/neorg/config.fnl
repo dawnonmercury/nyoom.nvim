@@ -1,14 +1,12 @@
 (import-macros {: packadd! : nyoom-module-p! : nyoom-module-ensure!} :macros)
 
-(local {: autoload} (require :core.lib.autoload))
-(local {: setup} (require :core.lib.setup))
-
 ;; conditional modules
 
 (local neorg-modules
        {:core.defaults {}
         :core.norg.manoeuvre {}
         :core.gtd.base {:config {:workspace :main}}
+        :core.keybinds {:config {:default_keybinds false}}
         :core.norg.dirman {:config {:workspaces {:main "~/neorg"}}}})
 
 ;; add conditional modules

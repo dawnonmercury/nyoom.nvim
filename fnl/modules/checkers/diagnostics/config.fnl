@@ -1,6 +1,4 @@
 (import-macros {: nyoom-module-p! : nyoom-module-ensure!} :macros)
-(local {: autoload} (require :core.lib.autoload))
-(local {: setup} (require :core.lib.setup))
 (local {: on-attach} (autoload :modules.tools.lsp.config))
 (local {: diagnostic-icons} (autoload :core.shared))
 (local null-ls (autoload :null-ls))
@@ -30,15 +28,18 @@
   (sign_define :DiagnosticSignHint
                {:text (. diagnostic-icons 4) :texthl :DiagnosticSignHint}))
 
-(nyoom-module-p! bindings
+(nyoom-module-p! config.+bindings
                  (do
                    (local {:open_float open-line-diag-float!
                            :goto_prev goto-diag-prev!
                            :goto_next goto-diag-next!}
                           vim.diagnostic)
-                   (map! [n] :<leader>d open-line-diag-float!)
-                   (map! [n] "[d" goto-diag-prev!)
-                   (map! [n] "]d" goto-diag-next!)))
+                   (map! [n] :<leader>d open-line-diag-float!
+                         {:desc "Open diagnostics at line"})
+                   (map! [n] "[d" goto-diag-prev!
+                         {:desc "Goto previous diagonstics"})
+                   (map! [n] "]d" goto-diag-next!
+                         {:desc "Goto next diagnostics"})))
 
 (nyoom-module-p! format
                  (do

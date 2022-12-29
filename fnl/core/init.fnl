@@ -1,139 +1,95 @@
-(import-macros {: colorscheme : command! : set!} :macros)
-(local {: autoload} (require :core.lib.autoload))
-(local {: warn!} (autoload :core.lib.io))
-
-;; optimizations
-
-(let [built-ins [:gzip
-                 :zip
-                 :zipPlugin
-                 :tar
-                 :tarPlugin
-                 :getscript
-                 :getscriptPlugin
-                 :vimball
-                 :vimballPlugin
-                 :2html_plugin
-                 :matchit
-                 :matchparen
-                 :logiPat
-                 :rrhelper
-                 :netrw
-                 :netrwPlugin
-                 :netrwSettings
-                 :netrwFileHandlers]
-      providers [:perl :node :ruby :python :python3]]
-  (each [_ v (ipairs built-ins)]
-    (let [plugin (.. :loaded_ v)]
-      (tset vim.g plugin 1)))
-  (each [_ v (ipairs providers)]
-    (let [provider (.. :loaded_ v :_provider)]
-      (tset vim.g provider 0))))
-
-;; add language servers to path
+;; add python provider and mason binaries
 
 (set vim.env.PATH (.. vim.env.PATH ":" (vim.fn.stdpath :data) :/mason/bin))
+
 (set vim.env.PATH (.. vim.env.PATH ":" (vim.fn.stdpath :config) :/bin))
-
-;; improve updatetime for quicker refresh + gitsigns
-
-(set! updatetime 250)
-(set! timeoutlen 400)
-
-;; Set shortmess
-
-(set! shortmess+ :sWcIS)
-
-;; Sign column
-
-(set! signcolumn "yes:1")
-
-;; Global subtitution by default
-
-(set! gdefault)
-
-;; Theres no need for formatoptions, we have our own
-
-(set! formatoptions [:q :j])
-
-;; By default no wrapping
-
-(set! nowrap)
-
-;; Use clipboard outside Neovim
-
-(set! clipboard :unnamedplus)
-
-;; Enable mouse input
-
-(set! mouse :a)
-
-;; Disable swapfiles and enable undofiles
-
-(set! undofile)
-(set! nowritebackup)
-(set! noswapfile)
-
-;; Smart search
-
-(set! ignorecase)
-(set! smartcase)
-
-;; Expand tabs to spaces
-
-(set! expandtab)
-(set! tabstop 4)
-(set! shiftwidth 4)
-(set! softtabstop 4)
-
-;; Split from left to right and top to bottom
-
-(set! splitright)
-(set! splitbelow)
-
-;; Use ripgrep for the builtin grep
-
-(set! grepprg "rg --vimgrep")
-(set! grepformat "%f:%l:%c:%m")
-
-;; Support fuzzy finding
-
-(set! path ["." "**"])
-
-;; Diff-mode
-
-(set! diffopt+ "linematch:60")
-
-;; Stabilize lines
-
-(set! splitkeep :screen)
-
-;; Replace Packer usage
-
-(command! PackerSync
-          `(warn! "Please use the bin/nyoom script instead of PackerSync"))
-
-(command! PackerInstall
-          `(warn! "Please use the bin/nyoom script instead of PackerInstall"))
-
-(command! PackerUpdate
-          `(warn! "Please use the bin/nyoom script instead of PackerUpdate"))
-
-(command! PackerCompile
-          `(warn! "Please use the bin/nyoom script instead of PackerCompile"))
-
-(command! PackerStatus "lua require 'packages' require('packer').status()")
-
-(command! PackerLockfile "lua require 'packages' require('packer').lockfile()")
 
 ;; check for cli
 
 (local cli (os.getenv :NYOOM_CLI))
+
 ;; If its a cli instance, load package management
-;; If its a regular instance, load userconfig and plugins
+;; If its a regular instance, load defaults, userconfig and plugins
 
 (if cli
     (require :packages)
     (do
+      ;; set opinionated defaults. TODO this should be in a module?
+      (import-macros {: command! : let! : set!} :macros)
+      ;; speedups
+      (set! updatetime 250)
+      (set! timeoutlen 400)
+      ;; visual options
+      (set! conceallevel 2)
+      (set! shortmess+ :sWcI)
+      (set! signcolumn "yes:1")
+      (set! formatoptions [:q :j])
+      (set! nowrap)
+      ;; just good defaults
+      (set! splitright)
+      (set! splitbelow)
+      ;; tab options
+      (set! tabstop 4)
+      (set! shiftwidth 4)
+      (set! softtabstop 4)
+      (set! expandtab)
+      ;; clipboard and mouse
+      (set! clipboard :unnamedplus)
+      (set! mouse :a)
+      ;; backups are annoying
+      (set! undofile)
+      (set! nowritebackup)
+      (set! noswapfile)
+      ;; search and replace
+      (set! ignorecase)
+      (set! smartcase)
+      (set! gdefault)
+      ;; better grep
+      (set! grepprg "rg --vimgrep")
+      (set! grepformat "%f:%l:%c:%m")
+      (set! path ["." "**"])
+      ;; nightly only options
+      (local {: nightly?} (autoload :core.lib))
+      (if (nightly?)
+          (do
+            (set! diffopt+ "linematch:60")
+            (set! splitkeep :screen)))
+      ;; gui options
+      (set! list)
+      (set! fillchars {:eob " "
+                       :vert " "
+                       :horiz " "
+                       :diff "╱"
+                       :foldclose ""
+                       :foldopen ""
+                       :fold " "
+                       :msgsep "─"})
+      (set! listchars {:tab " ──"
+                       :trail "·"
+                       :nbsp "␣"
+                       :precedes "«"
+                       :extends "»"})
+      (set! scrolloff 4)
+      (set! guifont "Liga SFMono Nerd Font:h14")
+      (let! neovide_padding_top 45)
+      (let! neovide_padding_left 38)
+      (let! neovide_padding_right 38)
+      (let! neovide_padding_bottom 20)
+      ;; load userconfig
       (require :config)
-      (require :packer_compiled)))
+      (require :packer_compiled)
+      ;; disable packer commands
+
+      (fn disable-packer [command]
+        (fn first-to-upper [str]
+          (str:gsub "^%l" string.upper))
+
+        (local packer-command (.. :Packer (first-to-upper command)))
+        (vim.api.nvim_create_user_command packer-command
+                                          (fn []
+                                            (error! (.. "Please use the `nyoom` cli")))
+                                          {}))
+
+      (let [packer-commands [:install :update :compile :sync :status :lockfile]]
+        (each [_ v (ipairs packer-commands)]
+          (disable-packer v)))))

@@ -11,14 +11,6 @@
 ;;   Author:              https://github.com/shaunsingh
 
 (import-macros {: custom-set-face! : let! : set! : nyoom-module-p!} :macros)
-(local {: autoload} (require :core.lib.autoload))
-(local {: blend-hex} (autoload :modules.ui.nyoom.colorutils))
-
-;; reset variables
-
-(when vim.g.colors_name
-  (vim.cmd "hi clear"))
-
 ;; set defaults
 
 (let! colors_name :carbon)
@@ -32,11 +24,11 @@
 
 (local carbon (or (and (= vim.o.background :dark)
                        {: base00
-                        :base01 (blend-hex base00 base06 0.085)
-                        :base02 (blend-hex base00 base06 0.18)
-                        :base03 (blend-hex base00 base06 0.3)
-                        :base04 (blend-hex base00 base06 0.82)
-                        :base05 (blend-hex base00 base06 0.95)
+                        :base01 (colorutils.blend-hex base00 base06 0.085)
+                        :base02 (colorutils.blend-hex base00 base06 0.18)
+                        :base03 (colorutils.blend-hex base00 base06 0.3)
+                        :base04 (colorutils.blend-hex base00 base06 0.82)
+                        :base05 (colorutils.blend-hex base00 base06 0.95)
                         : base06
                         :base07 "#08bdba"
                         :base08 "#3ddbd9"
@@ -50,8 +42,8 @@
                         :blend "#131313"
                         :none :NONE})
                   {:base00 base06
-                   :base01 (blend-hex base00 base06 0.95)
-                   :base02 (blend-hex base00 base06 0.82)
+                   :base01 (colorutils.blend-hex base00 base06 0.95)
+                   :base02 (colorutils.blend-hex base00 base06 0.82)
                    :base03 base00
                    :base04 "#37474F"
                    :base05 "#90A4AE"
@@ -241,7 +233,7 @@
 (nyoom-module-p! tree-sitter
                  (do
                    ;;; misc
-                   (custom-set-face! "@comment" [:italic]
+                   (custom-set-face! "@comment" []
                                      {:fg carbon.base03 :bg carbon.none})
                    (custom-set-face! "@error" []
                                      {:fg carbon.base11 :bg carbon.none})
@@ -496,7 +488,7 @@
                                      {:fg carbon.base05 :bg carbon.none})
                    (custom-set-face! :CmpItemAbbrMatchFuzzy [:bold]
                                      {:fg carbon.base04 :bg carbon.none})
-                   (custom-set-face! :CmpItemMenu [:italic]
+                   (custom-set-face! :CmpItemMenu []
                                      {:fg carbon.base04 :bg carbon.none})
                    (custom-set-face! :CmpItemKindInterface []
                                      {:fg carbon.base01 :bg carbon.base08})
@@ -569,6 +561,37 @@
                                      {:fg carbon.base15 :bg carbon.none})
                    (custom-set-face! :NvimTreeNormal []
                                      {:fg carbon.base04 :bg carbon.base00})))
+
+;; neotree
+
+(nyoom-module-p! neotree
+                 (do
+                   (custom-set-face! :NeoTreeDirectoryIcon []
+                                     {:fg carbon.base12 :bg carbon.none})
+                   (custom-set-face! :NeoTreeDirectoryName []
+                                     {:fg carbon.base09 :bg carbon.none})
+                   (custom-set-face! :NeoTreeRootName [:bold]
+                                     {:fg carbon.base09 :bg carbon.none})
+                   (custom-set-face! :NeoTreeFileIcon []
+                                     {:fg carbon.base12 :bg carbon.none})
+                   (custom-set-face! :NeoTreeFileName []
+                                     {:fg carbon.base06 :bg carbon.none})
+                   (custom-set-face! :NeoTreeIndentMarker []
+                                     {:fg carbon.base02 :bg carbon.none})
+                   (custom-set-face! :NeoTreeNormal []
+                                     {:fg carbon.base04 :bg carbon.base00})
+                   (custom-set-face! :NeoTreeNormalNC []
+                                     {:fg carbon.base05 :bg carbon.base00})
+                   (custom-set-face! :NeoTreeGitAdded []
+                                     {:fg carbon.base07 :bg carbon.none})
+                   (custom-set-face! :NeoTreeGitConflict []
+                                     {:fg carbon.base10 :bg carbon.none})
+                   (custom-set-face! :NeoTreeGitModified []
+                                     {:fg carbon.base09 :bg carbon.none})
+                   (custom-set-face! :NeoTreeGitUntracked []
+                                     {:fg carbon.base05 :bg carbon.none})
+                   (custom-set-face! :NeotreeFloatNormal []
+                                     {:fg carbon.blend :bg carbon.blend})))
 
 ;; neogit
 

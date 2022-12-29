@@ -1,7 +1,6 @@
 (import-macros {: packadd! : map! : nyoom-module-p!} :macros)
-(local {: autoload} (require :core.lib.autoload))
-(local {: setup} (require :core.lib.setup))
 (local {: load_extension} (autoload :telescope))
+(local {: executable?} (autoload :core.lib))
 
 (setup :telescope {:defaults {:prompt_prefix "   "
                               :selection_caret "  "
@@ -23,6 +22,10 @@
 (load_extension :ui-select)
 (packadd! telescope-file-browser.nvim)
 (load_extension :file_browser)
+(packadd! telescope-project.nvim)
+(load_extension :project)
+(packadd! telescope-tabs)
+(setup :telescope-tabs)
 ;; only install native if the flag is there
 
 (nyoom-module-p! telescope.+native
@@ -32,32 +35,42 @@
 
 ;; load media-files and zoxide only if their executables exist
 
-(when (= (vim.fn.executable :ueberzug) 1)
-  (do
-    (packadd! telescope-media-files.nvim)
-    (load_extension :media_files)))
+(when (executable? :ueberzug)
+  (packadd! telescope-media-files.nvim)
+  (load_extension :media_files))
 
-(when (= (vim.fn.executable :zoxide) 1)
-  (do
-    (packadd! telescope-zoxide)
-    (load_extension :zoxide)))
+(when (executable? :zoxide)
+  (packadd! telescope-zoxide)
+  (load_extension :zoxide))
 
-(nyoom-module-p! lsp
+(nyoom-module-p! default.+bindings
                  (do
-                   (local {:lsp_implementations open-impl-float!
-                           :lsp_references open-ref-float!
-                           :diagnostics open-diag-float!
-                           :lsp_document_symbols open-local-symbol-float!
-                           :lsp_workspace_symbols open-workspace-symbol-float!}
-                          (autoload :telescope.builtin))
-                   (map! [n] :<leader>li open-impl-float!)
-                   (map! [n] :<leader>lr open-ref-float!)
-                   (map! [n] :<leader>ls open-local-symbol-float!)
-                   (map! [n] :<leader>lS open-workspace-symbol-float!)))
-
-(nyoom-module-p! diagnostics
-                 (do
-                   (local {:diagnostics open-diag-float!}
-                          (autoload :telescope.builtin))
-                   (map! [n] :<leader>ld `(open-diag-float! {:bufnr 0}))
-                   (map! [n] :<leader>lD open-diag-float!)))
+                   (nyoom-module-p! lsp
+                                    (do
+                                      (local {:lsp_implementations open-impl-float!
+                                              :lsp_references open-ref-float!
+                                              :lsp_document_symbols open-local-symbol-float!
+                                              :lsp_workspace_symbols open-workspace-symbol-float!}
+                                             (autoload :telescope.builtin))
+                                      (map! [n] :<leader>ci open-impl-float!
+                                            {:desc "LSP Find implementations"})
+                                      (map! [n] :<leader>cD open-ref-float!
+                                            {:desc "LSP Jump to references"})
+                                      (map! [n] :<leader>cj
+                                            open-local-symbol-float!
+                                            {:desc "LSP Jump to symbol in file"})
+                                      (map! [n] :<leader>cJ
+                                            open-workspace-symbol-float!
+                                            {:desc "LSP Jump to symbol in workspace"})
+                                      (map! [n] :<leader>*
+                                            open-workspace-symbol-float!
+                                            {:desc "LSP Symbols in project"})))
+                   (nyoom-module-p! diagnostics
+                                    (do
+                                      (local {:diagnostics open-diag-float!}
+                                             (autoload :telescope.builtin))
+                                      (map! [n] :<leader>cx
+                                            `(open-diag-float! {:bufnr 0})
+                                            {:desc "Local diagnostics"})
+                                      (map! [n] :<leader>cX open-diag-float!
+                                            {:desc "Project diagnostics"})))))

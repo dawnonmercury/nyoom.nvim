@@ -1,9 +1,5 @@
-(import-macros {: packadd!} :macros)
+(import-macros {: packadd! : nyoom-module-p!} :macros)
 
-(local {: autoload} (require :core.lib.autoload))
-(local {: setup} (require :core.lib.setup))
-
-(packadd! nui.nvim)
 (setup :noice {:health {:checker false}
                :cmdline {:format {:cmdline {:pattern "^:"
                                             :icon " "
@@ -35,3 +31,13 @@
                :presets {:long_message_to_split true :lsp_doc_border true}
                :popupmenu {:backend :cmp}
                :format {}})
+
+(set vim.notify
+     (fn [msg level opts]
+       (packadd! nvim-notify)
+       (set vim.notify (autoload :notify))
+       (vim.notify msg level opts)
+       (nyoom-module-p! telescope
+                        (do
+                          (local {: load_extension} (autoload :telescope))
+                          (load_extension :notify)))))

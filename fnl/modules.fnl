@@ -1,6 +1,6 @@
 (import-macros {: nyoom!} :macros)
 
-;; NOTE: Any module with a TODO either isn't ready or hasn't been implemented yet.
+;; NOTE: TODO and FIXME modules still need work. WIP: modules work but may still be buggy
 
 ;; fnlfmt: skip
 (nyoom! :completion
@@ -16,7 +16,8 @@
         hydra                ; Discount modality for mythological beast hunters
         ;;indent-guides      ; highlighted indent columns
         modeline             ; snazzy, nano-emacs-inspired modeline
-        nvimtree             ; a project drawer, like NERDTree for vim
+        ;;nvimtree           ; a project drawer, like NERDTree for vim
+        neotree              ; tree-like structures for neovim
         ;;tabs               ; keep tabs on your buffers, literally
         vc-gutter            ; Get your diff out of the gutter
         window-select        ; Visually switch windows
@@ -34,7 +35,7 @@
 
         :term
         ;;fshell             ; WIP: the fennel shell that works everywhere
-        ;;toggleterm)        ; persistant/floating terminal wrapper for :term
+        toggleterm           ; persistant/floating terminal wrapper for :term
 
         :checkers
         diagnostics          ; tasing you for every semicolon you forget
@@ -45,7 +46,7 @@
         debugger             ; stepping through code, to help you add bugs
         docker               ; row row row your boat TODO +netman?
         ;;editorconfig       ; let someone else argue about tabs vs spaces
-        ;;magma              ; FIXME: tame Jupyter notebooks
+        ;;magma              ; tame Jupyter notebooks
         mason                ; setting your tools in stone
         eval                 ; run code, run (also, repls)
         ;;antifennel         ; hate fennel? write lua and compile it back
@@ -57,34 +58,35 @@
         rgb                  ; creating color strings
         tree-sitter          ; syntax and parsing, sitting in a tree... 
 
-         :lang
-         ;;cc                ; C > C++ == 1
-         ;;clojure           ; java with a lisp
-         ;;common-lisp       ; if you've seen one lisp, you've seen them all
-         ;;java              ; the poster child for carpal tunnel syndrome
-         ;;julia             ; a better, faster MATLAB
-         ;;kotlin            ; a better, slicker Java(Script)
-         latex               ; writing papers in Neovim has never been so fun
-         lua                 ; one-based indices? one-based indices
-         markdown            ; writing docs for people to ignore
-         ;;nim               ; python + lisp at the speed of c
- (neorg                      ; organize your plain life in plain text, the neovim way
-   +pretty
-   +present
-   +export
-   +nabla)
+        :lang
+        ;;cc                 ; C > C++ == 1
+        ;;clojure            ; java with a lisp
+        ;;common-lisp        ; if you've seen one lisp, you've seen them all
+        ;;java               ; the poster child for carpal tunnel syndrome
+        ;;julia              ; a better, faster MATLAB
+        ;;kotlin             ; FIXME: a better, slicker Java(Script)
+        latex                ; writing papers in Neovim has never been so fun
+        lua                  ; one-based indices? one-based indices
+        markdown             ; writing docs for people to ignore
+        ;;nim                ; python + lisp at the speed of c
+        (neorg               ; organize your plain life in plain text, the neovim way
+          +pretty
+          +present
+          +export
+          +nabla)
         ;;(org +pretty)      ; WIP: organize your plain life in plain text, the emacs way
- ;;nix                       ; I hereby declare "nix geht mehr!"
- ;;python                    ; beautiful is better than ugly
- ;;rust                      ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
- (sh +fish)                  ; she sells {ba,z,fi}sh shells on the C xor
- ;;zig                       ; C, but simpler
+        ;;nix                ; I hereby declare "nix geht mehr!"
+        ;;python             ; beautiful is better than ugly
+        ;;rust               ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+        (sh +fish)           ; she sells {ba,z,fi}sh shells on the C xor
+        ;;zig                ; C, but simpler
 
  :app
-        ;;calendar           ; Watch your missed deadlines in real time
+        calendar             ; Watch your missed deadlines in real time
 
  :config
-        ;;literate           ; Disguise your config as poor documentation
- (default             ; Reasonable defaults for reasonable people
+        ;;literate           ; FIXME: Disguise your config as poor documentation
+ (default                    ; Reasonable defaults for reasonable people
    +bindings 
+   +which-key
    +smartparens))

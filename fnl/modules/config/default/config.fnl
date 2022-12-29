@@ -1,26 +1,19 @@
-(import-macros {: nyoom-module-p! : set! : augroup! : autocmd!} :macros)
+(import-macros {: set! : augroup! : autocmd! : clear!} :macros)
 
-;; Restore cursor on exit
+(fn bufexists? [...]
+  (= (vim.fn.bufexists ...) 1))
 
-(augroup! restore-cursor-on-exit
+(augroup! restore-cursor-on-exit (clear!)
           (autocmd! VimLeave * `(set! guicursor ["a:ver100-blinkon0"])))
 
-(nyoom-module-p! nyoom (do
-                         (set! list)
-                         (set! fillchars
-                               {:eob " "
-                                :vert " "
-                                :diff "╱"
-                                :foldclose ""
-                                :foldopen ""
-                                :fold " "
-                                :msgsep "─"})
-                         (set! listchars
-                               {:tab " ──"
-                                :trail "·"
-                                :nbsp "␣"
-                                :precedes "«"
-                                :extends "»"})))
+(augroup! open-file-on-last-position (clear!)
+          (autocmd! BufReadPost * `(vim.cmd "silent! normal! g`\"zv")))
 
-(nyoom-module-p! nyoom (set! scrolloff 4))
-(nyoom-module-p! nyoom (set! guifont "Comic Code Ligatures:h15"))
+(augroup! read-file-on-disk-change (clear!)
+          (autocmd! [FocusGained BufEnter CursorHold CursorHoldI] *
+                    `(if (and (not= :c (vim.fn.mode))
+                              (not (bufexists? "[Command Line]")))
+                         (vim.cmd.checktime)))
+          (autocmd! FileChangedShellPost *
+                    `(vim.notify "File changed on disk. Buffer reloaded."
+                                 vim.log.levels.INFO)))

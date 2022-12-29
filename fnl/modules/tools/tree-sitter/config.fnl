@@ -1,7 +1,5 @@
 (import-macros {: packadd! : nyoom-module-p! : map!} :macros)
 
-(local {: autoload} (require :core.lib.autoload))
-(local {: setup} (require :core.lib.setup))
 ;; Conditionally enable leap-ast
 
 (nyoom-module-p! bindings
@@ -10,7 +8,8 @@
                    (let [leap-ast (autoload :leap-ast)]
                      (map! [nxo] :gs `(leap-ast.leap) {:desc "Leap AST"}))))
 
-(local treesitter-filetypes [:comment :help :fennel :vim :regex])
+(local treesitter-filetypes [:comment :help :fennel :vim :regex :query])
+
 ;; conditionally install parsers
 
 (nyoom-module-p! clojure (table.insert treesitter-filetypes :clojure))
@@ -52,6 +51,14 @@
                    (table.insert treesitter-filetypes :markdown)
                    (table.insert treesitter-filetypes :markdown_inline)))
 
+(nyoom-module-p! vc-gutter
+                 (do
+                   (table.insert treesitter-filetypes :git_rebase)
+                   (table.insert treesitter-filetypes :gitattributes)
+                   (table.insert treesitter-filetypes :gitcommit)))
+
+;; (table.insert treesitter-filetypes :gitignore)))
+
 (nyoom-module-p! org
                  (do
                    (local tsp (autoload :nvim-treesitter.parsers))
@@ -70,7 +77,8 @@
                    (set parser-config.norg
                         {:install_info {:url "https://github.com/nvim-neorg/tree-sitter-norg"
                                         :files [:src/parser.c :src/scanner.cc]
-                                        :branch :dev}})
+                                        :branch :dev
+                                        :use_makefile true}})
                    (set parser-config.norg_meta
                         {:install_info {:url "https://github.com/nvim-neorg/tree-sitter-norg-meta"
                                         :files [:src/parser.c]
