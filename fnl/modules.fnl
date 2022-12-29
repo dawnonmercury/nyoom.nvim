@@ -75,18 +75,18 @@
           +export
           +nabla)
         ;;(org +pretty)      ; WIP: organize your plain life in plain text, the emacs way
- ;;nix                       ; I hereby declare "nix geht mehr!"
- ;;python                    ; beautiful is better than ugly
- ;;rust                      ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
- (sh +fish)                  ; she sells {ba,z,fi}sh shells on the C xor
- ;;zig                       ; C, but simpler
+        ;;nix                ; I hereby declare "nix geht mehr!"
+        ;;python             ; beautiful is better than ugly
+        ;;rust               ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+        (sh +fish)           ; she sells {ba,z,fi}sh shells on the C xor
+        ;;zig                ; C, but simpler
 
  :app
-        ;;calendar           ; Watch your missed deadlines in real time
+        calendar             ; Watch your missed deadlines in real time
 
-        :config
+ :config
         ;;literate           ; FIXME: Disguise your config as poor documentation
-        (default             ; Reasonable defaults for reasonable people
-          +bindings 
-          +which-key
-          +smartparens))
+ (default                    ; Reasonable defaults for reasonable people
+   +bindings 
+   +which-key
+   +smartparens))

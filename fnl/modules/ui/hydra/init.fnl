@@ -4,8 +4,8 @@
               {:nyoom-module ui.hydra
                :module :hydra
                :keys [:<leader>g
-                      :<leader>o
-                      :<leader>f
-                      :<leader>z
                       :<leader>v
-                      :<leader>d]})
+                      :<leader>f
+                      :<leader>d
+                      :<leader>m
+                      :<leader>t]})
