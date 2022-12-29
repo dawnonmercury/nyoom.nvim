@@ -1,8 +1,4 @@
-(import-macros {: nyoom-module-p!
-                : set!
-                : vlua
-                : autocmd!
-                : packadd!} :macros)
+(import-macros {: nyoom-module-p! : set! : vlua : autocmd! : packadd!} :macros)
 
 ;; modeline
 
@@ -55,7 +51,7 @@
     mode-color))
 
 (fn get-fileinfo []
-  (var filename (or (and (= (vim.fn.expand "%") "") " nyoom-nvim v")
+  (var filename (or (and (= (vim.fn.expand "%") "") " nyoom-nvim v0.6.0-dev")
                     (vim.fn.expand "%:t")))
   (when (not= filename " nyoom-nvim ")
     (set filename (.. " " filename " ")))
@@ -128,8 +124,6 @@
   (when (>= count 2)
     (do
       (packadd! incline.nvim)
-      (local {: autoload} (require :core.lib.autoload))
-      (local {: setup} (autoload :core.lib.setup))
       (local {: diagnostic-icons} (autoload :core.shared))
 
       (fn incline-diagnostic-label [props]
