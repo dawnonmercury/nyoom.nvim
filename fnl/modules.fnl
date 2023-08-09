@@ -18,6 +18,8 @@
         modeline             ; snazzy, nano-emacs-inspired modeline
         ;;nvimtree           ; a project drawer, like NERDTree for vim
         neotree              ; tree-like structures for neovim
+        quickfix             ; enhancements to vim's builtin quickfix functionality
+        trouble              ; view your diagnostics, now with icons! (i knew u were trouble when you walked iiiinnn)
         ;;tabs               ; keep tabs on your buffers, literally
         vc-gutter            ; Get your diff out of the gutter
         window-select        ; Visually switch windows
@@ -65,7 +67,9 @@
         ;;java               ; the poster child for carpal tunnel syndrome
         ;;julia              ; a better, faster MATLAB
         ;;kotlin             ; FIXME: a better, slicker Java(Script)
+        ;;json               ; { "dʒeɪsən":  "Javascript Object Notation" }
         latex                ; writing papers in Neovim has never been so fun
+        ;;ledger             ; be audit you can be
         lua                  ; one-based indices? one-based indices
         markdown             ; writing docs for people to ignore
         ;;nim                ; python + lisp at the speed of c
@@ -79,6 +83,8 @@
         ;;python             ; beautiful is better than ugly
         ;;rust               ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
         (sh +fish)           ; she sells {ba,z,fi}sh shells on the C xor
+        ;;xml                ; extend my language
+        ;;yaml               ; yet another markup language to enable
         ;;zig                ; C, but simpler
 
  :app

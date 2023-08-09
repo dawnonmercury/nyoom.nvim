@@ -1,3 +1,11 @@
+# neovim
 lua/
-plugin/
 profile.json
+
+# cli
+result/
+target/
+packages.json
+
+# macOS
+.DS_Store

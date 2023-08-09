@@ -1,32 +1,22 @@
 (import-macros {: nyoom-module-p! : nyoom-module-ensure!} :macros)
 (local {: on-attach} (autoload :modules.tools.lsp.config))
-(local {: diagnostic-icons} (autoload :core.shared))
 (local null-ls (autoload :null-ls))
 (local null-ls-sources [])
 
-;; ensures
-
 (nyoom-module-ensure! lsp)
 
-;; configure signs
+(vim.diagnostic.config {:underline {:severity {:min vim.diagnostic.severity.INFO}}
+                        :signs {:severity {:min vim.diagnostic.severity.HINT}}
+                        :virtual_text false
+                        :float {:show_header false
+                                :source true}
+                        :update_in_insert false
+                        :severity_sort true})
 
-(let [{: config : severity} vim.diagnostic
-      {: sign_define} vim.fn]
-  (config {:underline {:severity {:min severity.INFO}}
-           :signs {:severity {:min severity.INFO}}
-           ;; lsp_lines handles this
-           :virtual_text false
-           :update_in_insert true
-           :severity_sort true
-           :float {:show_header false :border :rounded}})
-  (sign_define :DiagnosticSignError
-               {:text (. diagnostic-icons 1) :texthl :DiagnosticSignError})
-  (sign_define :DiagnosticSignWarn
-               {:text (. diagnostic-icons 2) :texthl :DiagnosticSignWarn})
-  (sign_define :DiagnosticSignInfo
-               {:text (. diagnostic-icons 3) :texthl :DiagnosticSignInfo})
-  (sign_define :DiagnosticSignHint
-               {:text (. diagnostic-icons 4) :texthl :DiagnosticSignHint}))
+(vim.fn.sign_define :DiagnosticSignError {:text shared.icons.error :texthl "DiagnosticSignError"})
+(vim.fn.sign_define :DiagnosticSignWarn {:text shared.icons.warn :texthl "DiagnosticSignWarn"})
+(vim.fn.sign_define :DiagnosticSignInfo {:text shared.icons.info :texthl "DiagnosticSignInfo"})
+(vim.fn.sign_define :DiagnosticSignHint {:text shared.icons.hint :texthl "DiagnosticSignHint"})
 
 (nyoom-module-p! config.+bindings
                  (do
@@ -43,8 +33,7 @@
 
 (nyoom-module-p! format
                  (do
-                   (table.insert null-ls-sources
-                                 null-ls.builtins.formatting.fnlfmt)
+                   ;; (table.insert null-ls-sources null-ls.builtins.formatting.fnlfmt)
                    (nyoom-module-p! cc
                                     (table.insert null-ls-sources
                                                   null-ls.builtins.formatting.clang_format))

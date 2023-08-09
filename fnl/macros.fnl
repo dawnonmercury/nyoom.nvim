@@ -1,12 +1,24 @@
 ;; fennel-ls: macro-file
 
-(local {: nil? : str? : ->str : begins-with? : all : crypt} (require :core.lib))
-
-(fn car [xs]
-  (. xs 1))
+(local {: nil? : str? : bool? : num? : ->str : begins-with? : all : crypt : car} (require :core.lib))
 
 (lambda expr->str [expr]
-  `(macrodebug ,expr nil))
+  `(-> (macrodebug ,expr nil
+        (string.gsub "{}" "[]")
+        (string.gsub "_%d+_auto" "#"))))
+
+(lambda extend-fn [fn-name args & body]
+  (assert-compile (sym? fn-name) "expected symbol for fn-name" fn-name)
+  (assert-compile (sequence? args) "expected list for args" args)
+  (assert-compile (> (length body) 0) "expected at least one statement" body)
+  (table.insert body '(values (unpack result#)))
+  `(let [old# ,fn-name]
+     (set ,fn-name
+          (fn [...]
+            (local result# [(old# ...)])
+            (local [,(unpack args)] result#)
+            ,(unpack body)))
+     ,fn-name))
 
 (tset _G :nyoom/pack [])
 (tset _G :nyoom/rock [])
@@ -480,9 +492,122 @@
   ```fennel
   (packadd! packer.nvim)
   ```"
-  (assert-compile (sym? package) "expected symbol for package" package)
-  (let [package (->str package)]
+  (let [package (if (sym? package)
+                    (->str package)
+                    package)]
     `(vim.api.nvim_cmd {:cmd :packadd :args [,package]} {})))
+
+(lambda pact-use-package! [identifier ?options]
+  "use-package inspired package manager for nyoom, using pact.nvim
+
+  Accepts the following arguments: 
+  identifier -> must be a string
+  options -> a table of options. Optional
+
+  Accepts the following options (pact):
+  :name -> only required for raw `git` calls (not forge shortcuts), which defines the name to use in the `pact` ui (e.g. :fugitive)
+  :branch -> branch to clone from. If no branch or additional versioning is specified, the default HEAD branch is cloned (e.g. :main)
+  :tag -> git release tag to clone (e.g \"v3.7\")
+  :commit -> full-length or shortened commit hash to clone (e.g. :ca82a6dff817ec66f44342007202690a93763949 or :ca82a6d)
+  :version -> a semvar constraint (e.g. \"> 0.0.0\")
+  :after -> either a string or function to run after a plugin is cloned or synced (e.g. \"sleep 2\")
+  :opt? -> installs a package into /opt instead of /start, requires you to manually load the package (default false)
+
+  Accepts the following additional options: 
+  :host -> which git forge to download from. Accepts git, github, gitlab, and srht. By default set to github
+  :cmd -> cmd(s) to lazy load on. Accepts a string or sequential table
+  :event -> vimscript event(s) to lazy load on. Accepts a string or sequential table
+  :ft -> filetype(s) to lazy load on. Accepts a string or sequential table
+  :bind -> shortcut to bind <leader> keymaps. Accepts a table with kv pairs
+  :init -> code to run before package is loaded
+  :config -> code to run after a package is loaded
+
+  TODO: 
+  :keys
+  :bind auto-lazy
+  "
+  (assert-compile (str? identifier) "expected string for identifier" identifier)
+  (if (not (nil? ?options))
+      (assert-compile (table? ?options) "expected table for options" ?options))
+  (lambda cmd-load [cmd loadname]
+    `(vim.api.nvim_create_user_command ,cmd
+                                       (fn []
+                                         (vim.api.nvim_del_user_command ,cmd)
+                                         (vim.api.nvim_cmd {:cmd :packadd
+                                                            :args [,loadname]}
+                                                           {})
+                                         (vim.cmd ,cmd))
+                                       {:bang true :range true :nargs "*"}))
+  (lambda event-load [event callback augroup]
+    `(vim.api.nvim_create_autocmd ,event
+                                  {:callback (,callback)
+                                   :once true
+                                   :group ,augroup}))
+  (lambda ft-load [ft callback augroup]
+    `(vim.api.nvim_create_autocmd :FileType
+                                  {:pattern ,ft
+                                   :callback (,callback)
+                                   :once true
+                                   :group ,augroup}))
+  (lambda defer-load [x callback augroup loadname]
+    (let [time (if (bool? x) 0 (if (num? x) x))
+          doft (if (= loadname :nvim-lspconfig)
+                   (vim.cmd "silent! do FileType"))]
+      `(vim.api.nvim_create_autocmd [:BufRead :BufWinEnter :BufNewFile]
+                                    {:group ,augroup
+                                     :callback (fn []
+                                                 (if (not= vim.fn.expand "%" "")
+                                                     (vim.defer_fn (fn []
+                                                                     (,callback)
+                                                                     ,doft)
+                                                                   ,time)))})))
+  (let [callback-sym (sym :*callback*)
+        loadname (string.sub (string.match package "/.+") 2)
+        augroup (.. :nyoom-pact- loadname)
+        host :github
+        autocmds `(do)
+                    
+        callback `(do)
+                    
+        result `(do)
+                  
+        options (or ?options {})
+        options (collect [k v (pairs options)]
+                  (match k
+                    ;;                     :host (local host v)
+                    ;;                     :cmd (table.insert autocmds (cmd-load v loadname))
+                    ;;                     :event (table.insert autocmds
+                    ;;                                       (event-load v callback-sym augroup))
+                    ;;                     :ft (table.insert autocmds (ft-load v callback-sym augroup))
+                    ;;                     :defer (table.insert autocmds
+                    ;;                                          (defer-load v callback-sym augroup
+                    ;;                                                      loadname))
+                    ;;                     :bind (each [bind cmd (pairs v)]
+                    ;;                             (let [bind (.. :<leader> bind)
+                    ;;                                   cmd (.. :<cmd> cmd :<CR>)]
+                    ;;                               (table.insert result
+                    ;;                                             `(vim.keymap.set [:n] ,bind ,cmd))))
+                    :init
+                    (table.insert result `,v)
+                    :config
+                    (table.insert callback `,v)
+                    _
+                    (values k v)))]
+    (table.insert result `((. (autoload :pact) ,host) ,identifier ,options))
+    (if (. options :opt?)
+        (do
+          (table.insert result
+                        `(vim.api.nvim_create_augroup ,augroup {:clear true}))
+          (table.insert result `(fn ,callback-sym
+                                  []
+                                  (vim.api.nvim_del_augroup_by_name ,augroup)
+                                  (vim.api.nvim_cmd {:cmd :packadd
+                                                     :args [,loadname]}
+                                                    {})
+                                  ,callback))
+          (table.insert result `,autocmds))
+        (table.insert result `,callback))
+    result))
 
 (lambda map! [[modes] lhs rhs ?options]
   "Add a new mapping using the vim.keymap.set API.
@@ -606,6 +731,22 @@
     [[scope] name value] (let-with-scope! [scope] name value)
     [name value] (let-global! name value)
     _ (error "expected let! to have at least two arguments: name value")))
+
+(lambda verify-dependencies! [dependencies]
+   "Uses the vim.notify API to print a warning for every dependecy that is no
+   available and then executes an early return from the module."
+   `(let [dependencies# ,dependencies
+          info# (debug.getinfo 1 :S)
+          module-name# info#.source
+          module-name# (module-name#:match "@(.*)")
+          not-available# (icollect [_# dependency# (ipairs dependencies#)]
+                           (when (not (pcall require dependency#))
+                             dependency#))]
+      (when (> (length not-available#) 0)
+        (each [_# dependency# (ipairs not-available#)]
+          (vim.notify (string.format "Could not load '%s' as '%s' is not available." module-name# dependency#)
+                      vim.log.levels.WARN))
+        (lua "return nil"))))
 
 (lambda sh [...]
   "simple macro to run shell commands inside fennel"
@@ -787,6 +928,7 @@
 ;; (lambda nyoom-add-cmp-source! [])
 
 {: expr->str
+ : extend-fn
  : vlua
  : colorscheme
  : sh
@@ -807,6 +949,8 @@
  : rock!
  : unpack!
  : packadd!
+ : pact-use-package!
+ : verify-dependencies!
  : nyoom!
  : nyoom-init-modules!
  : nyoom-compile-modules!

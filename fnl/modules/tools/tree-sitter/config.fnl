@@ -1,4 +1,4 @@
-(import-macros {: packadd! : nyoom-module-p! : map!} :macros)
+(import-macros {: packadd! : nyoom-module-p! : map! : custom-set-face!} :macros)
 
 ;; Conditionally enable leap-ast
 
@@ -8,13 +8,15 @@
                    (let [leap-ast (autoload :leap-ast)]
                      (map! [nxo] :gs `(leap-ast.leap) {:desc "Leap AST"}))))
 
-(local treesitter-filetypes [:comment :help :fennel :vim :regex :query])
+(local treesitter-filetypes [:vimdoc :fennel :vim :regex :query])
 
 ;; conditionally install parsers
 
 (nyoom-module-p! clojure (table.insert treesitter-filetypes :clojure))
 
 (nyoom-module-p! common-lisp (table.insert treesitter-filetypes :commonlisp))
+
+(nyoom-module-p! csharp (table.insert treesitter-filetypes :c_sharp))
 
 (nyoom-module-p! java (table.insert treesitter-filetypes :java))
 
@@ -23,6 +25,8 @@
 (nyoom-module-p! kotlin (table.insert treesitter-filetypes :kotlin))
 
 (nyoom-module-p! latex (table.insert treesitter-filetypes :latex))
+
+; (nyoom-module-p! ledger (table.insert treesitter-filetypes :ledger))
 
 (nyoom-module-p! lua (table.insert treesitter-filetypes :lua))
 
@@ -93,24 +97,39 @@
 
 ;; load dependencies
 
-(packadd! nvim-ts-rainbow)
+(packadd! nvim-ts-rainbow2)
+(packadd! nvim-ts-refactor)
 (packadd! nvim-treesitter-textobjects)
-; the usual
+(packadd! nvim-ts-context-commentstring) 
+
+;; setup hl groups for ts-rainbow
+
+(custom-set-face! :TSRainbowRed  [] {:fg "#df2566" :bg :NONE})
+(custom-set-face! :TSRainbowYellow [] {:fg "#45ac57" :bg :NONE})
+(custom-set-face! :TSRainbowBlue [] {:fg "#e0ad37" :bg :NONE})
+(custom-set-face! :TSRainbowOrange [] {:fg "#5566bf" :bg :NONE})
+(custom-set-face! :TSRainbowGreen [] {:fg "#9a46ba" :bg :NONE})
+(custom-set-face! :TSRainbowViolet [] {:fg "#569aac" :bg :NONE})
+(custom-set-face! :TSRainbowCyan [] {:fg "#348989" :bg :NONE})
+
+;; the usual
 
 (setup :nvim-treesitter.configs
        {:ensure_installed treesitter-filetypes
-        :sync_install true
         :highlight {:enable true :use_languagetree true}
         :indent {:enable true}
+        :context_commentstring {:enable true}
+        :refactor {:enable true
+                   :keymaps {:smart_rename "<localleader>rn"}}
+        :query_linter {:enable true
+                       :use_virtual_text true
+                       :lint_events ["BufWrite" "CursorHold"]}
         :rainbow {:enable true
-                  :extended_mode true
-                  :colors [:#df2566
-                           :#45ac57
-                           :#e0ad37
-                           :#5566bf
-                           :#9a46ba
-                           :#569aac
-                           :#348989]}
+                  :query {1 :rainbow-parens 
+                          :html :rainbow-tags 
+                          :latex :rainbow-blocks
+                          :tsx :rainbow-tags
+                          :vue :rainbow-tags}}
         :incremental_selection {:enable true
                                 :keymaps {:init_selection :gnn
                                           :node_incremental :grn

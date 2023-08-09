@@ -1,20 +1,25 @@
-(import-macros {: packadd! : map! : nyoom-module-p!} :macros)
+(import-macros {: packadd! : map! : nyoom-module-p! : augroup! : clear! : autocmd!} :macros)
 (local {: load_extension} (autoload :telescope))
 (local {: executable?} (autoload :core.lib))
+
+;; load telescope
 
 (setup :telescope {:defaults {:prompt_prefix "   "
                               :selection_caret "  "
                               :entry_prefix "  "
                               :sorting_strategy :ascending
                               :layout_strategy :flex
+                              :set_env {:COLORTERM :truecolor}
+                              :dynamic_preview_title
                               :layout_config {:horizontal {:prompt_position :top
                                                            :preview_width 0.55}
                                               :vertical {:mirror false}
                                               :width 0.87
                                               :height 0.8
-                                              :preview_cutoff 120}
-                              :set_env {:COLORTERM :truecolor}
-                              :dynamic_preview_title true}})
+                                              :preview_cutoff 120} true}
+                   :pickers {:oldfiles {:prompt_title "Recent files"}}})
+
+
 
 ;; Load extensions
 
@@ -26,6 +31,7 @@
 (load_extension :project)
 (packadd! telescope-tabs)
 (setup :telescope-tabs)
+
 ;; only install native if the flag is there
 
 (nyoom-module-p! telescope.+native
@@ -33,7 +39,7 @@
                    (packadd! telescope-fzf-native.nvim)
                    (load_extension :fzf)))
 
-;; load media-files and zoxide only if their executables exist
+;; load conditional extensions
 
 (when (executable? :ueberzug)
   (packadd! telescope-media-files.nvim)
@@ -42,6 +48,8 @@
 (when (executable? :zoxide)
   (packadd! telescope-zoxide)
   (load_extension :zoxide))
+
+;; load bindings
 
 (nyoom-module-p! default.+bindings
                  (do
